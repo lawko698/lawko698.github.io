@@ -3,34 +3,21 @@ title: About
 layout: page
 ---
 
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<p>I'm a recent Data Science graduate from Monash University. </p>
 
 <h2>Skills</h2>
 
 <ul class="skill-list">
-	<li>HTML</li>
-	<li>Javascript (Design Patterns, Testes)</li>
-	<li>Git</li>
-	<li>PHP</li>
 	<li>Python</li>
 	<li>MySQL</li>
-	<li>Scrum and Kanban</li>
+	<li>Javascript</li>
+	<li>Hive</li>
+	<li>Pig</li>
 </ul>
 
 <h2>Projects</h2>
 
 <ul>
-	<li><a href="https://github.com/">Lorem Lorem</a></li>
+	<li><a href="https://github.com/notebooks/wrangling/">Data Wrangling</a></li>
+	<li><a href="https://github.com/notebooks/donor%20choose/">Recommender System</a></li>
 </ul>
