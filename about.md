@@ -3,7 +3,7 @@ title: About
 layout: page
 ---
 
-<p>I'm a recent Data Science graduate from Monash University. </p>
+<p>I'm a recent Data Science graduate from Monash University. I switched from the economics field as I became more fascinated with technology and the impact big data has on society. Constantly learning new things, which I'll post on this website.</p>
 
 <h2>Skills</h2>
 
