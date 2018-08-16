@@ -1,3 +1,6 @@
 remote_theme: sergiokopplin/indigo
-title: Lawrence Ko
-description: Projects and more
+name: John Doe
+bio: 'A Man who travels the world eating noodles'
+...
+
+and lot of other options, like width, projects, pages, read-time, tags, related posts, animations, multiple-authors, etc.
