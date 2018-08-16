@@ -18,6 +18,6 @@ layout: page
 <h2>Projects</h2>
 
 <ul>
-	<li><a href="https://github.com/notebooks/wrangling/">Data Wrangling</a></li>
-	<li><a href="https://github.com/notebooks/donor%20choose/">Recommender System</a></li>
+	<li><a href="https://github.com/lawko698/notebooks/wrangling/">Data Wrangling</a></li>
+	<li><a href="https://github.com/lawko698/notebooks/donor%20choose/">Recommender System</a></li>
 </ul>
