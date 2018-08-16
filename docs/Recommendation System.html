@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Recommender system (Part 2)</title>
+<link rel="stylesheet" href="static/style.css">
+<script src="https://cdn.jsdelivr.net/npm/cash-dom@1.3.5/dist/cash.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true,
+        processEnvironments: true
+    },
+    // Center justify equations in code and markdown cells. Elsewhere
+    // we use CSS to left justify single line equations in code cells.
+    displayAlign: 'center',
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}},
+        linebreaks: { automatic: true }
+    }
+});
+</script>
+
+
+</head>
+<body class="off-canvas off-canvas-sidebar-show">
+
+    <a class="off-canvas-toggle btn btn-primary btn-action" href="#sidebar">
+        <i class="icon icon-menu"></i>
+    </a>
+
+    <div id="sidebar" class="off-canvas-sidebar">
+        <div id="sidebar-title">
+            <h2>Donors Choose</h2>
+        </div>
+
+        <div id="sidebar-toc">
+            
+            <ul class="menu menu-nav nav" id="menu-pre">
+            <li class="nav-item"><a href="EDA and Data Cleaning.html">EDA and Data Cleaning (Part 1)</a></li>
+            </ul>
+            
+            <ul class="menu menu-nav nav" id="menu-main">
+            <li class="nav-item indent-1"><a href="#Recommender-system-(Part-2)">Recommender system (Part 2)</a></li><li class="nav-item indent-2"><a href="#Data-Science-For-Good:-DonorsChoose.org">Data Science For Good: DonorsChoose.org</a></li><li class="nav-item indent-1"><a href="#System-Requirements-and-Python-Libraries-Used">System Requirements and Python Libraries Used</a></li><li class="nav-item indent-1"><a href="#1.-Loading-the-Data">1. Loading the Data</a></li><li class="nav-item indent-1"><a href="#2.-Pre-processing">2. Pre-processing</a></li><li class="nav-item indent-1"><a href="#3.-Initial-content-based-recommendation-system">3. Initial content-based recommendation system</a></li><li class="nav-item indent-1"><a href="#4.-Updated-content-based-recommendation-system">4. Updated content-based recommendation system</a></li><li class="nav-item indent-1"><a href="#5.-Evaluation">5. Evaluation</a></li><li class="nav-item indent-1"><a href="#6.-Future-Improvements">6. Future Improvements</a></li>
+            </ul>
+            
+
+        </div>
+    </div>
+
+    <a class="off-canvas-overlay" href="#close"></a>
+
+    <div class="off-canvas-content" id="content">
+        <div><div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Recommender-system-(Part-2)">Recommender system (Part 2)<a class="anchor-link" href="#Recommender-system-(Part-2)">¶</a></h1><h2 id="Data-Science-For-Good:-DonorsChoose.org">Data Science For Good: DonorsChoose.org<a class="anchor-link" href="#Data-Science-For-Good:-DonorsChoose.org">¶</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This notebook follows up from the EDA and Data Cleaning (Part 1). The aim of this notebook is to create a recommendation system that enables DonorsChoose.org to build targeted email campaigns recommending specific classroom requests to prior donors. For example, if a donor has donated to a classroom project that aims to improve children literacy, they may want to donate to other similar types of projects.</p>
+<p>The solution I propose for this problem is a content-based recommender system. The system utilizes users' past donations to propose similar classroom projects based on their attributes.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="System-Requirements-and-Python-Libraries-Used">System Requirements and Python Libraries Used<a class="anchor-link" href="#System-Requirements-and-Python-Libraries-Used">¶</a></h1><p>Date: 30/07/2018</p>
+<p>Version: 1.0</p>
+<p>Computer Requirements: 16GB Ram</p>
+<p>Environment: Python 3.6 and Jupyter notebook</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="kn">import</span> <span class="n">coo_matrix</span><span class="p">,</span> <span class="n">vstack</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics.pairwise</span> <span class="kn">import</span> <span class="n">cosine_similarity</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">normalize</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">TfidfVectorizer</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics.pairwise</span> <span class="kn">import</span> <span class="n">linear_kernel</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="1.-Loading-the-Data">1. Loading the Data<a class="anchor-link" href="#1.-Loading-the-Data">¶</a></h1><ul>
+<li>Donations.CSV</li>
+<li>Projects.CSV</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython"><pre><span></span><span class="n">donations_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"Adj_Donations.csv"</span><span class="p">)</span>
+<span class="n">projects_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"Adj_Projects.csv"</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="2.-Pre-processing">2. Pre-processing<a class="anchor-link" href="#2.-Pre-processing">¶</a></h1><p>Merge both datasets by Project ID.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython"><pre><span></span><span class="n">combine_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">donations_df</span><span class="p">,</span><span class="n">projects_df</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">'Project ID'</span><span class="p">,</span> <span class="n">how</span> <span class="o">=</span> <span class="s2">"inner"</span><span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">'index'</span><span class="p">],</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Since the dataset is a time series of donations made by users, preserving the time series is important as the system will record and adjust the recommendations made to the donors over time.</p>
+<p>Therefore, we sort by donation date in ascending order from earliest to latest.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython"><pre><span></span><span class="n">combine_data</span><span class="p">[</span><span class="s1">'Donation Received Date'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">combine_data</span><span class="p">[</span><span class="s1">'Donation Received Date'</span><span class="p">])</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython"><pre><span></span><span class="n">combine_data</span> <span class="o">=</span> <span class="n">combine_data</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">'Donation Received Date'</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>For testing purposes, we have limit the dataset to just the first 50,000 rows.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython"><pre><span></span><span class="n">combine_df</span> <span class="o">=</span> <span class="n">combine_data</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">50000</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We create a project dataframe that will be used to create new text features as an attribute that characterizes each classroom project.</p>
+<p>The project dataset is filtered by projects that only show up in the first 50,000 rows of donation.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython"><pre><span></span><span class="n">projects_used</span> <span class="o">=</span> <span class="n">combine_df</span><span class="p">[</span><span class="s1">'Project ID'</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython"><pre><span></span><span class="n">project_df</span> <span class="o">=</span> <span class="n">projects_df</span><span class="p">[</span><span class="n">projects_df</span><span class="p">[</span><span class="s1">'Project ID'</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">projects_used</span><span class="p">)]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython"><pre><span></span><span class="n">project_df</span> <span class="o">=</span> <span class="n">project_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython"><pre><span></span><span class="n">project_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[10]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>index</th>
+      <th>Project ID</th>
+      <th>School ID</th>
+      <th>Teacher ID</th>
+      <th>Teacher Project Posted Sequence</th>
+      <th>Project Type</th>
+      <th>Project Title</th>
+      <th>Project Essay</th>
+      <th>Project Short Description</th>
+      <th>Project Need Statement</th>
+      <th>Project Subject Category Tree</th>
+      <th>Project Subject Subcategory Tree</th>
+      <th>Project Grade Level Category</th>
+      <th>Project Resource Category</th>
+      <th>Project Cost</th>
+      <th>Project Posted Date</th>
+      <th>Project Expiration Date</th>
+      <th>Project Current Status</th>
+      <th>Project Fully Funded Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>7685f0265a19d7b52a470ee4bac883ba</td>
+      <td>e180c7424cb9c68cb49f141b092a988f</td>
+      <td>4ee5200e89d9e2998ec8baad8a3c5968</td>
+      <td>25</td>
+      <td>Teacher-Led</td>
+      <td>Stand Up to Bullying: Together We Can!</td>
+      <td>Did you know that 1-7 students in grades K-12 ...</td>
+      <td>Did you know that 1-7 students in grades K-12 ...</td>
+      <td>My students need 25 copies of "Bullying in Sch...</td>
+      <td>Applied Learning</td>
+      <td>Character Education, Early Development</td>
+      <td>Grades PreK-2</td>
+      <td>Technology</td>
+      <td>361.80</td>
+      <td>2013-01-01</td>
+      <td>2013-05-30</td>
+      <td>Fully Funded</td>
+      <td>2013-01-11</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>afd99a01739ad5557b51b1ba0174e832</td>
+      <td>1287f5128b1f36bf8434e5705a7cc04d</td>
+      <td>6c5bd0d4f20547a001628aefd71de89e</td>
+      <td>1</td>
+      <td>Teacher-Led</td>
+      <td>Help Second Grade ESL Students Develop Languag...</td>
+      <td>Visiting or moving to a new place can be very ...</td>
+      <td>Visiting or moving to a new place can be very ...</td>
+      <td>My students need beginning vocabulary audio ca...</td>
+      <td>Literacy &amp; Language</td>
+      <td>ESL</td>
+      <td>Grades PreK-2</td>
+      <td>Supplies</td>
+      <td>435.92</td>
+      <td>2013-01-01</td>
+      <td>2013-05-30</td>
+      <td>Fully Funded</td>
+      <td>2013-05-22</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>c614a38bb1a5e68e2ae6ad9d94bb2492</td>
+      <td>900fec9cd7a3188acbc90586a09584ef</td>
+      <td>8ed6f8181d092a8f4c008b18d18e54ad</td>
+      <td>40</td>
+      <td>Teacher-Led</td>
+      <td>Help Bilingual Students Strengthen Reading Com...</td>
+      <td>Students at our school are still working hard ...</td>
+      <td>Students at our school are still working hard ...</td>
+      <td>My students need one copy of each book in The ...</td>
+      <td>Literacy &amp; Language</td>
+      <td>ESL, Literacy</td>
+      <td>Grades 3-5</td>
+      <td>Books</td>
+      <td>161.26</td>
+      <td>2013-01-01</td>
+      <td>2013-05-31</td>
+      <td>Fully Funded</td>
+      <td>2013-02-06</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>ec82a697fab916c0db0cdad746338df9</td>
+      <td>3b200e7fe3e6dde3c169c02e5fb5ae86</td>
+      <td>893173d62775f8be7c30bf4220ad0c33</td>
+      <td>2</td>
+      <td>Teacher-Led</td>
+      <td>Help Us Make Each Minute Count!</td>
+      <td>"Idle hands" were something that Issac Watts s...</td>
+      <td>"Idle hands" were something that Issac Watts s...</td>
+      <td>My students need items such as Velcro, two pou...</td>
+      <td>Special Needs</td>
+      <td>Special Needs</td>
+      <td>Grades 3-5</td>
+      <td>Supplies</td>
+      <td>264.19</td>
+      <td>2013-01-01</td>
+      <td>2013-05-30</td>
+      <td>Fully Funded</td>
+      <td>2013-01-01</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>563958074d7b12b48b939279eb59e6ca</td>
+      <td>b79a19772090efccde93b3a5934d829f</td>
+      <td>5ef1793ff657860ca7856d475715ec2a</td>
+      <td>4</td>
+      <td>Teacher-Led</td>
+      <td>It's about Time...  Time for Kids!</td>
+      <td>We know that success in school is directly rel...</td>
+      <td>We know that success in school is directly rel...</td>
+      <td>My students need 24 subscriptions to Time for ...</td>
+      <td>Literacy &amp; Language, History &amp; Civics</td>
+      <td>Literacy, Social Sciences</td>
+      <td>Grades 3-5</td>
+      <td>Other</td>
+      <td>175.15</td>
+      <td>2013-01-01</td>
+      <td>2013-05-31</td>
+      <td>Fully Funded</td>
+      <td>2013-02-01</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Combine the two text features into a new variable.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython"><pre><span></span><span class="n">text</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'Project Title'</span><span class="p">,</span><span class="s1">'Project Essay'</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+    <span class="n">project_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">project_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s1">''</span><span class="p">)</span>
+    <span class="n">project_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">project_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython"><pre><span></span><span class="n">project_df</span><span class="p">[</span><span class="s1">'text'</span><span class="p">]</span> <span class="o">=</span> <span class="n">project_df</span><span class="p">[</span><span class="s1">'Project Title'</span><span class="p">]</span> <span class="o">+</span><span class="s2">" "</span><span class="o">+</span> <span class="n">project_df</span><span class="p">[</span><span class="s1">'Project Essay'</span><span class="p">]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="3.-Initial-content-based-recommendation-system">3. Initial content-based recommendation system<a class="anchor-link" href="#3.-Initial-content-based-recommendation-system">¶</a></h1><p>Below is a simple content-based recommendation system which uses Term Frequency - Inverse Document Frequency (TF-IDF) to parse through the new text feature created above. Term frequency is where words such as 'Books' within a project's text feature are counted and divided by the total number of words in the text feature. Inverse Document Frequency is a logarithmic function of total number of documents are divided by the number of classroom projects that contain the words 'Books'. More information can be found in <a href="http://scikit-learn.org/stable/modules/feature_extraction.html#text-feature-extraction">sklearn documentation section 4.2.3.4</a></p>
+<p>After calculating the TF-IDF, Cosine Similarity matrix is computed which is a method to find similar classroom projects from TF-IDF. This system obtains the latest donation made by the donor, and is provided a new recommendation based on the Similarity Matrix.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython"><pre><span></span><span class="k">class</span> <span class="nc">ContentRecSystem</span><span class="p">:</span>
+    <span class="sd">"""</span>
+<span class="sd">    A simple content-based recommendation system</span>
+<span class="sd">    </span>
+<span class="sd">    """</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tfidf_matrix</span> <span class="o">=</span> <span class="bp">None</span>
+        
+    <span class="k">def</span> <span class="nf">_compute_tfidf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">text</span><span class="p">):</span>
+        <span class="sd">"""</span>
+<span class="sd">         Creates tf-idf matrix</span>
+<span class="sd">        </span>
+<span class="sd">        :param text: text feature used for tf-idf computation</span>
+<span class="sd">        :return: tf-idf matrix</span>
+<span class="sd">        """</span>
+        <span class="n">tf</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">(</span><span class="n">strip_accents</span><span class="o">=</span><span class="s1">'unicode'</span><span class="p">,</span>
+                         <span class="n">analyzer</span><span class="o">=</span><span class="s1">'word'</span><span class="p">,</span>
+                         <span class="n">ngram_range</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+                         <span class="n">max_df</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>
+                         <span class="n">lowercase</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                         <span class="n">max_features</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span>
+                         <span class="n">stop_words</span><span class="o">=</span><span class="s1">'english'</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">tfidf_matrix</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        
+        
+    <span class="k">def</span> <span class="nf">_get_donor_latest_donation_project_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">combine_df</span><span class="p">,</span> <span class="n">user_id</span><span class="p">):</span>
+        <span class="sd">"""</span>
+<span class="sd">         Obtains the latest donation made by the donor</span>
+<span class="sd">        </span>
+<span class="sd">        :param combine_df: main dataframe</span>
+<span class="sd">        :param user_id: donor ID</span>
+<span class="sd">        :return: project ID that donor last donated</span>
+<span class="sd">        """</span>
+        <span class="n">latest_donation</span> <span class="o">=</span> <span class="n">combine_df</span><span class="p">[</span><span class="n">combine_df</span><span class="p">[</span><span class="s1">'Donor ID'</span><span class="p">]</span> <span class="o">==</span> <span class="n">user_id</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">latest_donation</span>
+    
+    
+    <span class="k">def</span> <span class="nf">retrieve_similar_projects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">combine_df</span><span class="p">,</span> <span class="n">project_df</span><span class="p">,</span> <span class="n">user_id</span><span class="p">):</span>
+        
+        <span class="sd">"""</span>
+<span class="sd">         Obtains the latest donation made by the donor</span>
+<span class="sd">        </span>
+<span class="sd">        :param combine_df: main dataframe</span>
+<span class="sd">        :param project_df: projects dataframe</span>
+<span class="sd">        :param user_id: donor ID</span>
+<span class="sd">        :return: A list of tuples. Tuples contain cosine similarity value and project ID recommended by the system</span>
+<span class="sd">        """</span>
+
+        <span class="c1"># obtain project_id from last donation</span>
+        <span class="n">project_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_donor_latest_donation_project_id</span><span class="p">(</span><span class="n">combine_df</span><span class="p">,</span> <span class="n">user_id</span><span class="p">)</span>
+        
+        <span class="c1"># compute tfidf not stored in class</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tfidf_matrix</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">project_df</span><span class="p">[</span><span class="s1">'text'</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_compute_tfidf</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        
+        <span class="c1"># linear_kernel provides the same result as cosine_similarity since tfidf_matrix by tfidf_matrix is used. </span>
+        <span class="c1"># It is slightly faster</span>
+        <span class="n">cosine_similarities</span> <span class="o">=</span> <span class="n">linear_kernel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tfidf_matrix</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tfidf_matrix</span><span class="p">)</span>
+        
+        <span class="n">pj_index</span> <span class="o">=</span> <span class="n">project_df</span><span class="p">[</span><span class="n">project_df</span><span class="p">[</span><span class="s1">'Project ID'</span><span class="p">]</span> <span class="o">==</span> <span class="n">project_id</span><span class="p">]</span><span class="o">.</span><span class="n">index</span>
+        
+        <span class="c1"># obtain top 10 cosine similar projects to last project</span>
+        <span class="n">similar_indices</span> <span class="o">=</span> <span class="n">cosine_similarities</span><span class="p">[</span><span class="n">pj_index</span><span class="p">]</span><span class="o">.</span><span class="n">argsort</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">()[:</span><span class="o">-</span><span class="mi">11</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        
+        <span class="c1"># pair cosine similarity with project id into a list</span>
+        <span class="n">recommend_projects</span> <span class="o">=</span> <span class="p">[(</span><span class="n">cosine_similarities</span><span class="p">[</span><span class="n">pj_index</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()[</span><span class="n">i</span><span class="p">],</span> \
+                               <span class="n">project_df</span><span class="p">[</span><span class="s1">'Project ID'</span><span class="p">][</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">similar_indices</span><span class="p">][</span><span class="mi">1</span><span class="p">:]</span>
+           
+        <span class="k">return</span> <span class="n">recommend_projects</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>From the model below, we obtain a list of projects suggested. However, we should further extend this model to utilize past donations instead of just the latest donations.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython"><pre><span></span><span class="n">content_model</span> <span class="o">=</span> <span class="n">ContentRecSystem</span><span class="p">()</span>
+<span class="n">content_model</span><span class="o">.</span><span class="n">retrieve_similar_projects</span><span class="p">(</span><span class="n">combine_df</span><span class="p">,</span><span class="n">project_df</span><span class="p">,</span> <span class="s1">'01afd72c41476784417b9479646876f8'</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[14]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[(0.4137130158890267, '48eb8af6e730d25389659e9a074c6f97'),
+ (0.37326512658196076, 'ca8a1d7e5ac6489eb741c852ca489376'),
+ (0.36926618980403975, 'f24ebbebe377d16183b6e1164b458e52'),
+ (0.3629362304904644, '1d24755c1f5c3a39c65d9c90ed3988b3'),
+ (0.35850924216587665, '7e841b3308cb5472ba49d57a82f93e2b'),
+ (0.35802521666602266, '57148dd44d084568e8980be78665f018'),
+ (0.3494154530664604, '12a8954cc9c341c62a099ff966e3797d'),
+ (0.346798626575864, '77477fe9d07ec1bc14da4fc8e385570e'),
+ (0.34313339860722164, 'f7d61ecd29d0e05a17b09e4d2906a8bf')]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="4.-Updated-content-based-recommendation-system">4. Updated content-based recommendation system<a class="anchor-link" href="#4.-Updated-content-based-recommendation-system">¶</a></h1><p>Below is an extended content-based recommendation system does the same as the simple content-based recommendation system shown above, except it collects all past donations and builds a donor profile which the system recommends to the user. The model's user profile is influenced by the weighting system, where the most recent projects the donor has donated towards have a greater effect on the user profile while earlier donations have a lesser effect on the user profile.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython"><pre><span></span><span class="k">class</span> <span class="nc">UpdatedContentRecSystem</span><span class="p">:</span>
+    <span class="sd">"""</span>
+<span class="sd">    A updated content-based recommendation system with user profiles</span>
+<span class="sd">    </span>
+<span class="sd">    """</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tfidf_matrix</span> <span class="o">=</span> <span class="bp">None</span>
+        
+    <span class="k">def</span> <span class="nf">_compute_tfidf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">text</span><span class="p">):</span>
+        <span class="sd">"""</span>
+<span class="sd">         Creates tf-idf matrix</span>
+<span class="sd">        </span>
+<span class="sd">        :param text: text feature used for tf-idf computation</span>
+<span class="sd">        :return: tf-idf matrix</span>
+<span class="sd">        """</span>
+        <span class="n">tf</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">(</span><span class="n">strip_accents</span><span class="o">=</span><span class="s1">'unicode'</span><span class="p">,</span>
+                         <span class="n">analyzer</span><span class="o">=</span><span class="s1">'word'</span><span class="p">,</span>
+                         <span class="n">ngram_range</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+                         <span class="n">max_df</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>
+                         <span class="n">lowercase</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                         <span class="n">max_features</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span>
+                         <span class="n">stop_words</span><span class="o">=</span><span class="s1">'english'</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">tfidf_matrix</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    
+    
+    <span class="k">def</span> <span class="nf">_compute_weighted_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">combine_df</span><span class="p">,</span> <span class="n">user_id</span><span class="p">):</span>
+        <span class="sd">"""</span>
+<span class="sd">         Creates user profile</span>
+<span class="sd">        </span>
+<span class="sd">        :param combine_df: main dataframe</span>
+<span class="sd">        :param user_id: donor ID</span>
+<span class="sd">        :return: An array of user profile from weighted projects previously donated </span>
+<span class="sd">        """</span>
+        <span class="c1"># contains all project's tfidf </span>
+        <span class="n">projects_list</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="c1"># A list of donor's unique projects</span>
+        <span class="n">donor_unique_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_donor_unique_df</span><span class="p">(</span><span class="n">combine_df</span><span class="p">)</span>
+        <span class="c1"># A list of past projects user donated towards</span>
+        <span class="n">donor_projects</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_users_projects</span><span class="p">(</span><span class="n">donor_unique_df</span><span class="p">,</span> <span class="n">user_id</span><span class="p">)</span>
+        
+        <span class="c1"># build a list of project's tfidf</span>
+        <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">donor_projects</span><span class="p">:</span>
+            <span class="n">pj_index</span> <span class="o">=</span> <span class="n">project_df</span><span class="p">[</span><span class="n">project_df</span><span class="p">[</span><span class="s1">'Project ID'</span><span class="p">]</span> <span class="o">==</span> <span class="n">project</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">projects_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tfidf_matrix</span><span class="p">[</span><span class="n">pj_index</span><span class="p">:</span><span class="n">pj_index</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+            
+        <span class="c1"># stack the arrays of tfidf</span>
+        <span class="n">projects_matrix</span> <span class="o">=</span> <span class="n">vstack</span><span class="p">(</span><span class="n">projects_list</span><span class="p">)</span>
+        
+        <span class="c1"># obtain weights for each project</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_weights</span><span class="p">(</span><span class="n">donor_unique_df</span><span class="p">,</span> <span class="n">user_id</span><span class="p">)</span>
+        
+        <span class="c1"># multiply weights with project matrix divide by weights</span>
+        <span class="n">multiply</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">projects_matrix</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">weights</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+        
+        <span class="c1"># normalize using sklearn</span>
+        <span class="n">weighted_user</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">multiply</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">weighted_user</span>
+        
+        
+    <span class="k">def</span> <span class="nf">_get_donor_latest_donation_project_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">combine_df</span><span class="p">,</span> <span class="n">user_id</span><span class="p">):</span>
+        <span class="sd">"""</span>
+<span class="sd">         Obtains the latest donation made by the donor</span>
+<span class="sd">        </span>
+<span class="sd">        :param combine_df: main dataframe</span>
+<span class="sd">        :param user_id: donor ID</span>
+<span class="sd">        :return: project ID that donor last donated</span>
+<span class="sd">        """</span>
+        
+        <span class="n">latest_donation</span> <span class="o">=</span> <span class="n">combine_df</span><span class="p">[</span><span class="n">combine_df</span><span class="p">[</span><span class="s1">'Donor ID'</span><span class="p">]</span> <span class="o">==</span> <span class="n">user_id</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">latest_donation</span>
+    
+    
+    <span class="k">def</span> <span class="nf">_create_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">donor_unique_df</span><span class="p">,</span> <span class="n">user_id</span><span class="p">):</span>
+        <span class="sd">"""</span>
+<span class="sd">         Creates a list of weights. Most recent projects have the greatest influence on user profile</span>
+<span class="sd">        </span>
+<span class="sd">        :param donor_unique_df: donor's unique projects dataframe</span>
+<span class="sd">        :param user_id: donor ID</span>
+<span class="sd">        :return: weights for user profile's projects</span>
+<span class="sd">        """</span>
+        <span class="c1"># the most recent project has the highest weight</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        
+        <span class="c1"># builds a list of weights that decrease over time</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">donor_unique_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">user_id</span><span class="p">])</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">weights</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">weights</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">_get_donor_unique_df</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">combine_df</span><span class="p">):</span>
+        <span class="sd">"""</span>
+<span class="sd">         Wrangles the data to provide donor's unique projects</span>
+<span class="sd">        </span>
+<span class="sd">        :param combine_df: main dataframe</span>
+<span class="sd">        :return: donor's unique projects dataframe</span>
+<span class="sd">        """</span>
+        
+        <span class="n">donor_unique_projects</span> <span class="o">=</span> <span class="n">combine_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">'Donor ID'</span><span class="p">,</span> <span class="s1">'Project ID'</span><span class="p">])[</span><span class="s1">'Donation Amount'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+        <span class="n">donor_unique_df</span> <span class="o">=</span> <span class="n">donor_unique_projects</span><span class="p">[</span><span class="n">donor_unique_projects</span><span class="p">[</span><span class="s1">'Project ID'</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">project_df</span><span class="p">[</span><span class="s1">'Project ID'</span><span class="p">])]</span>\
+        <span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">'Donor ID'</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">donor_unique_df</span>
+    
+    <span class="k">def</span> <span class="nf">_get_users_projects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">donor_unique_df</span><span class="p">,</span> <span class="n">user_id</span><span class="p">):</span>
+        <span class="sd">"""</span>
+<span class="sd">         Obtain donor's unique donated projects</span>
+<span class="sd">        </span>
+<span class="sd">        :param donor_unique_df: donor's unique projects dataframe</span>
+<span class="sd">        :param user_id: donor ID</span>
+<span class="sd">        :return: donor's list of projects</span>
+<span class="sd">        """</span>
+    
+        <span class="n">donor_projects</span> <span class="o">=</span> <span class="n">donor_unique_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">user_id</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">donor_projects</span><span class="p">[</span><span class="s1">'Project ID'</span><span class="p">]</span>
+    
+    <span class="k">def</span> <span class="nf">retrieve_similar_projects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">combine_df</span><span class="p">,</span> <span class="n">project_df</span><span class="p">,</span> <span class="n">user_id</span><span class="p">):</span>
+        <span class="sd">"""</span>
+<span class="sd">         Obtains the latest donation made by the donor</span>
+<span class="sd">        </span>
+<span class="sd">        :param combine_df: main dataframe</span>
+<span class="sd">        :param project_df: projects dataframe</span>
+<span class="sd">        :param user_id: donor ID</span>
+<span class="sd">        :return: A list of tuples. Tuples contain cosine similarity value and project ID recommended by the system</span>
+<span class="sd">        """</span>
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tfidf_matrix</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">project_df</span><span class="p">[</span><span class="s1">'text'</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_compute_tfidf</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        
+        <span class="n">user_weight</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_weighted_user</span><span class="p">(</span><span class="n">combine_df</span><span class="p">,</span> <span class="n">user_id</span><span class="p">)</span>
+        
+        <span class="n">cosine_similarities</span> <span class="o">=</span> <span class="n">cosine_similarity</span><span class="p">(</span><span class="n">user_weight</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tfidf_matrix</span><span class="p">)</span>
+        
+        <span class="n">similar_indices</span> <span class="o">=</span> <span class="n">cosine_similarities</span><span class="o">.</span><span class="n">argsort</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">()[:</span><span class="o">-</span><span class="mi">101</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">recommend_projects</span> <span class="o">=</span> <span class="p">[(</span><span class="n">project_df</span><span class="p">[</span><span class="s1">'Project ID'</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="n">cosine_similarities</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">similar_indices</span><span class="p">]</span>
+        
+        <span class="n">donor_unique_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_donor_unique_df</span><span class="p">(</span><span class="n">combine_df</span><span class="p">)</span>
+        
+        <span class="n">project_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_users_projects</span><span class="p">(</span><span class="n">donor_unique_df</span><span class="p">,</span><span class="n">user_id</span><span class="p">))</span>
+        
+        <span class="n">filtered_recommend_projects</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">recommend_projects</span> <span class="k">if</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">project_list</span><span class="p">]</span>
+        
+        <span class="k">return</span> <span class="n">filtered_recommend_projects</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>From the results below, we obtained a slightly different set of recommended projects due to our constructed user profile.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [16]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython"><pre><span></span><span class="n">ucontent_model</span> <span class="o">=</span> <span class="n">UpdatedContentRecSystem</span><span class="p">()</span>
+<span class="n">ucontent_model</span><span class="o">.</span><span class="n">retrieve_similar_projects</span><span class="p">(</span><span class="n">combine_df</span><span class="p">,</span><span class="n">project_df</span><span class="p">,</span> <span class="s1">'01afd72c41476784417b9479646876f8'</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[16]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[('48eb8af6e730d25389659e9a074c6f97', 0.35353551327282295),
+ ('1d24755c1f5c3a39c65d9c90ed3988b3', 0.34135566368564324),
+ ('f24ebbebe377d16183b6e1164b458e52', 0.34021887212633994),
+ ('ca8a1d7e5ac6489eb741c852ca489376', 0.3365361363226553),
+ ('82b016127576da540a80acb139f54b15', 0.3226863058271395),
+ ('57148dd44d084568e8980be78665f018', 0.3212905921735998),
+ ('7e841b3308cb5472ba49d57a82f93e2b', 0.3181711300428763),
+ ('12a8954cc9c341c62a099ff966e3797d', 0.3118784666746285),
+ ('5bc0f656a05088ca43cd6eac7bcd102c', 0.31183864683811974),
+ ('19f69113b264c65a56774a655203289c', 0.3112840995279238)]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="5.-Evaluation">5. Evaluation<a class="anchor-link" href="#5.-Evaluation">¶</a></h1><p>Now we need to quantify how well our model performs. Due to time series nature of the dataset, I have choosen to implement a walk forward approach to model testing. For example, if a person has only made 5 unique donations over the period of the dataset, the model will start using their first donation history to provide a recommendation on their second. Afterwards, the third recommendation is support by the previous two donations, and so forth.</p>
+<p>For each recommendation, a list of 10 projects are recommended and if the next actual donation appear in the list, the model has successfully offered a good recommendation list. This is called Top-N recommendation (where N is 10 in our case). We will calculate the recall@10 at each prediction interval (e.g. first donation history recommend/predict the second donation, etc).</p>
+<p>In addition to recall metric, I compute the number of correct recommendations for all intervals, which is the accuracy metric.</p>
+<p>Note: Precision is not valid for this model as there are no 'bad' donations, as there is no threshold for a good donation.</p>
+<p>The model below is adjusted to incorporate the testing.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [17]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython"><pre><span></span><span class="k">class</span> <span class="nc">ContentRecSystemWeightsTest</span><span class="p">:</span>
+    <span class="sd">"""</span>
+<span class="sd">    A test content-based recommendation system</span>
+<span class="sd">    """</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tfidf_matrix</span> <span class="o">=</span> <span class="bp">None</span>
+        
+    <span class="k">def</span> <span class="nf">_compute_tfidf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">text</span><span class="p">):</span>
+        <span class="sd">"""</span>
+<span class="sd">         Creates tf-idf matrix</span>
+<span class="sd">        </span>
+<span class="sd">        :param text: text feature used for tf-idf computation</span>
+<span class="sd">        :return: tf-idf matrix</span>
+<span class="sd">        """</span>
+        <span class="n">tf</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">(</span><span class="n">strip_accents</span><span class="o">=</span><span class="s1">'unicode'</span><span class="p">,</span>
+                         <span class="n">analyzer</span><span class="o">=</span><span class="s1">'word'</span><span class="p">,</span>
+                         <span class="n">ngram_range</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+                         <span class="n">max_df</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>
+                         <span class="n">lowercase</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                         <span class="n">max_features</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span>
+                         <span class="n">stop_words</span><span class="o">=</span><span class="s1">'english'</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">tfidf_matrix</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    
+    
+    <span class="k">def</span> <span class="nf">_compute_weighted_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">combine_df</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">project_k</span><span class="p">):</span>
+        <span class="sd">"""</span>
+<span class="sd">         Creates user profile</span>
+<span class="sd">        </span>
+<span class="sd">        :param combine_df: main dataframe</span>
+<span class="sd">        :param user_id: donor ID</span>
+<span class="sd">        :param project_k: filter donors with k number of unique projects</span>
+<span class="sd">        :return: An array of user profile from weighted projects previously donated </span>
+<span class="sd">        """</span>
+        <span class="c1"># contains all project's tfidf </span>
+        <span class="n">projects_list</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="c1"># A list of donor's unique projects</span>
+        <span class="n">donor_unique_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_donor_unique_df</span><span class="p">(</span><span class="n">combine_df</span><span class="p">)</span>
+        <span class="c1"># A list of past projects user donated towards</span>
+        <span class="n">donor_projects</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_users_projects</span><span class="p">(</span><span class="n">donor_unique_df</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">project_k</span><span class="p">)</span>
+        
+        <span class="c1"># build a list of project's tfidf</span>
+        <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">donor_projects</span><span class="p">:</span>
+            <span class="n">pj_index</span> <span class="o">=</span> <span class="n">project_df</span><span class="p">[</span><span class="n">project_df</span><span class="p">[</span><span class="s1">'Project ID'</span><span class="p">]</span> <span class="o">==</span> <span class="n">project</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">projects_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tfidf_matrix</span><span class="p">[</span><span class="n">pj_index</span><span class="p">:</span><span class="n">pj_index</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+            
+        <span class="c1"># stack the arrays of tfidf</span>
+        <span class="n">projects_matrix</span> <span class="o">=</span> <span class="n">vstack</span><span class="p">(</span><span class="n">projects_list</span><span class="p">)</span>
+        
+        <span class="c1"># obtain weights for each project</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_weights</span><span class="p">(</span><span class="n">donor_unique_df</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">project_k</span><span class="p">)</span>
+        
+        <span class="c1"># multiply weights with project matrix divide by weights</span>
+        <span class="n">multiply</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">projects_matrix</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">weights</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+        
+        <span class="c1"># normalize using sklearn</span>
+        <span class="n">weighted_user</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">multiply</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">weighted_user</span>
+    
+    
+    <span class="k">def</span> <span class="nf">_get_donor_latest_donation_project_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">combine_df</span><span class="p">,</span> <span class="n">user_id</span><span class="p">):</span>
+        <span class="sd">"""</span>
+<span class="sd">         Obtains the latest donation made by the donor</span>
+<span class="sd">        </span>
+<span class="sd">        :param combine_df: main dataframe</span>
+<span class="sd">        :param user_id: donor ID</span>
+<span class="sd">        :return: project ID that donor last donated</span>
+<span class="sd">        """</span>
+        
+        <span class="n">latest_donation</span> <span class="o">=</span> <span class="n">combine_df</span><span class="p">[</span><span class="n">combine_df</span><span class="p">[</span><span class="s1">'Donor ID'</span><span class="p">]</span> <span class="o">==</span> <span class="n">user_id</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">latest_donation</span>
+        
+        
+    <span class="k">def</span> <span class="nf">_create_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">donor_unique_df</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">project_k</span><span class="p">):</span>
+        <span class="sd">"""</span>
+<span class="sd">         Creates a list of weights. Most recent projects have the greatest influence on user profile</span>
+<span class="sd">        </span>
+<span class="sd">        :param donor_unique_df: donor's unique projects dataframe</span>
+<span class="sd">        :param user_id: donor ID</span>
+<span class="sd">        :param project_k: filter donors with k number of unique projects</span>
+<span class="sd">        :return: weights for user profile's projects</span>
+<span class="sd">        """</span>
+        <span class="c1"># the most recent project has the highest weight</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        
+        <span class="c1"># builds a list of weights that decrease over time</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">donor_unique_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">user_id</span><span class="p">])</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">weights</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">weights</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">weights</span><span class="p">[:</span><span class="n">project_k</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    
+    
+    <span class="k">def</span> <span class="nf">_get_donor_unique_df</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">combine_df</span><span class="p">):</span>
+        <span class="sd">"""</span>
+<span class="sd">         Wrangles the data to provide donor's unique projects</span>
+<span class="sd">        </span>
+<span class="sd">        :param combine_df: main dataframe</span>
+<span class="sd">        :return: donor's unique projects dataframe</span>
+<span class="sd">        """</span>
+        
+        <span class="n">donor_unique_projects</span> <span class="o">=</span> <span class="n">combine_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">'Donor ID'</span><span class="p">,</span> <span class="s1">'Project ID'</span><span class="p">])[</span><span class="s1">'Donation Amount'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+        <span class="n">donor_unique_df</span> <span class="o">=</span> <span class="n">donor_unique_projects</span><span class="p">[</span><span class="n">donor_unique_projects</span><span class="p">[</span><span class="s1">'Project ID'</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">project_df</span><span class="p">[</span><span class="s1">'Project ID'</span><span class="p">])]</span>\
+        <span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">'Donor ID'</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">donor_unique_df</span>
+    
+    
+    <span class="k">def</span> <span class="nf">_get_users_projects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">donor_unique_df</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">project_k</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">"""</span>
+<span class="sd">         Obtain donor's unique donated projects</span>
+<span class="sd">        </span>
+<span class="sd">        :param donor_unique_df: donor's unique projects dataframe</span>
+<span class="sd">        :param user_id: donor ID</span>
+<span class="sd">        :param project_k: filter donors with k number of unique projects</span>
+<span class="sd">        :return: donor's list of projects</span>
+<span class="sd">        """</span>
+    
+        <span class="n">donor_projects</span> <span class="o">=</span> <span class="n">donor_unique_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">user_id</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">donor_projects</span><span class="p">[</span><span class="s1">'Project ID'</span><span class="p">][:</span><span class="n">project_k</span><span class="p">]</span>
+    
+    
+    <span class="k">def</span> <span class="nf">retrieve_similar_projects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">combine_df</span><span class="p">,</span> <span class="n">project_df</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">project_k</span><span class="p">):</span>
+        <span class="sd">"""</span>
+<span class="sd">         Obtains the latest donation made by the donor</span>
+<span class="sd">        </span>
+<span class="sd">        :param combine_df: main dataframe</span>
+<span class="sd">        :param project_df: projects dataframe</span>
+<span class="sd">        :param user_id: donor ID</span>
+<span class="sd">        :param project_k: filter donors with k number of unique projects</span>
+<span class="sd">        :return: A list of tuples. Tuples contain cosine similarity value and project ID recommended by the system</span>
+<span class="sd">        """</span>
+        <span class="c1"># obtain project_id from last donation</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tfidf_matrix</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">project_df</span><span class="p">[</span><span class="s1">'text'</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_compute_tfidf</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        
+        <span class="n">user_weight</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_weighted_user</span><span class="p">(</span><span class="n">combine_df</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">project_k</span><span class="p">)</span>
+        
+        <span class="n">cosine_similarities</span> <span class="o">=</span> <span class="n">cosine_similarity</span><span class="p">(</span><span class="n">user_weight</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tfidf_matrix</span><span class="p">)</span>
+        <span class="n">similar_indices</span> <span class="o">=</span> <span class="n">cosine_similarities</span><span class="o">.</span><span class="n">argsort</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">()[:</span><span class="o">-</span><span class="mi">101</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">recommend_projects</span> <span class="o">=</span> <span class="p">[(</span><span class="n">project_df</span><span class="p">[</span><span class="s1">'Project ID'</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="n">cosine_similarities</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">similar_indices</span><span class="p">]</span>
+        
+        <span class="n">donor_unique_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_donor_unique_df</span><span class="p">(</span><span class="n">combine_df</span><span class="p">)</span>
+        <span class="n">project_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_users_projects</span><span class="p">(</span><span class="n">donor_unique_df</span><span class="p">,</span><span class="n">user_id</span><span class="p">,</span> <span class="n">project_k</span><span class="p">))</span>
+     
+        <span class="n">filtered_recommend_projects</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">recommend_projects</span> <span class="k">if</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">project_list</span> <span class="p">]</span>
+        
+        <span class="k">return</span> <span class="n">filtered_recommend_projects</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In the model evaluation, we will look at users who have made a maxmimum of 5 unique donations. It will return an array of recall@10 for 4 recommendation/prediction intervals and an overall accuracy score.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [18]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython"><pre><span></span><span class="k">class</span> <span class="nc">ModelEvaluation</span><span class="p">:</span>
+    <span class="sd">"""</span>
+<span class="sd">    A class to test the recommendation model</span>
+<span class="sd">    """</span>
+    <span class="k">def</span> <span class="nf">_get_donors_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">combine_df</span><span class="p">,</span> <span class="n">max_project</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+        <span class="sd">"""</span>
+<span class="sd">         Obtains the list of donors who have unique k donations </span>
+<span class="sd">        </span>
+<span class="sd">        :param combine_df: main dataframe</span>
+<span class="sd">        :param max_project: unique k donations </span>
+<span class="sd">        :return: list of unique donors</span>
+<span class="sd">        """</span>
+        <span class="n">test</span> <span class="o">=</span> <span class="n">combine_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">'Donor ID'</span><span class="p">,</span><span class="s1">'Project ID'</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">test_data</span> <span class="o">=</span> <span class="n">test</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">'Donor ID'</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="n">max_project</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">"Number of test users:"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">test_data</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()[</span><span class="s1">'Donor ID'</span><span class="p">])))</span>
+        <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">test_data</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()[</span><span class="s1">'Donor ID'</span><span class="p">])</span>
+    
+    <span class="k">def</span> <span class="nf">evaluate_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">combine_df</span><span class="p">,</span> <span class="n">project_df</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">max_project</span> <span class="o">=</span> <span class="mi">5</span><span class="p">):</span>
+        <span class="sd">"""</span>
+<span class="sd">         Evaluates the model for a user</span>
+<span class="sd">        </span>
+<span class="sd">        :param combine_df: main dataframe</span>
+<span class="sd">        :param project_df: projects dataframe</span>
+<span class="sd">        :param user_id: donor ID</span>
+<span class="sd">        :param max_project: unique k donations  </span>
+<span class="sd">        :return: list of scores indicating right/wrong recommendation</span>
+<span class="sd">        """</span>
+        <span class="c1"># stores the scores of recommendations for each prediction iterval</span>
+        <span class="n">score_list</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="n">donor_unique_df</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">_get_donor_unique_df</span><span class="p">(</span><span class="n">combine_df</span><span class="p">)</span>
+        <span class="n">full_projects</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">_get_users_projects</span><span class="p">(</span><span class="n">donor_unique_df</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">max_project</span><span class="p">)</span>
+        
+        <span class="c1"># Verifies the recommendation/prediction to actual donation for each interval</span>
+        <span class="k">for</span> <span class="n">project_k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_project</span><span class="p">):</span>
+            <span class="n">recommendation_list</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">retrieve_similar_projects</span><span class="p">(</span><span class="n">combine_df</span><span class="p">,</span> <span class="n">project_df</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">project_k</span><span class="p">)</span>
+            <span class="n">score</span> <span class="o">=</span> <span class="mi">0</span>
+            
+            <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">recommendation_list</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">full_projects</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">project_k</span><span class="p">]</span> <span class="o">==</span> <span class="n">project</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="n">score</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">score_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+                      
+        <span class="k">return</span> <span class="n">score_list</span>
+    
+    
+    <span class="k">def</span> <span class="nf">evaluate_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">combine_df</span><span class="p">,</span> <span class="n">project_df</span><span class="p">,</span> <span class="n">max_project</span> <span class="o">=</span> <span class="mi">5</span><span class="p">):</span>
+        <span class="sd">"""</span>
+<span class="sd">         Evaluates the model for each user</span>
+<span class="sd">        </span>
+<span class="sd">        :param model: Recommendation System model</span>
+<span class="sd">        :param combine_df: main dataframe</span>
+<span class="sd">        :param project_df: projects dataframe</span>
+<span class="sd">        :param max_project: unique k donations  </span>
+<span class="sd">        :return: recall and accuracy metric</span>
+<span class="sd">        """</span>
+        <span class="n">score_array_list</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="c1"># obtain the list of users who have k number of unique donations</span>
+        <span class="n">users_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_donors_list</span><span class="p">(</span><span class="n">combine_df</span><span class="p">,</span> <span class="n">max_project</span><span class="p">)</span>
+        
+        <span class="c1"># Process all users</span>
+        <span class="k">for</span> <span class="n">user_id</span> <span class="ow">in</span> <span class="n">users_list</span><span class="p">:</span>
+            <span class="n">array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_user</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">combine_df</span><span class="p">,</span> <span class="n">project_df</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">max_project</span><span class="p">)</span>
+            <span class="n">score_array_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coo_matrix</span><span class="p">(</span><span class="n">array</span><span class="p">))</span>
+        
+        <span class="c1"># Create a score matrix</span>
+        <span class="n">score_matrix</span> <span class="o">=</span> <span class="n">vstack</span><span class="p">(</span><span class="n">score_array_list</span><span class="p">)</span>
+        
+        <span class="n">recall</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">score_matrix</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">users_list</span><span class="p">)</span>
+        <span class="n">accuracy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">score_matrix</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">users_list</span><span class="p">)</span> <span class="o">*</span> <span class="n">max_project</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">recall</span><span class="p">,</span> <span class="n">accuracy</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [19]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython"><pre><span></span><span class="n">test_model</span> <span class="o">=</span> <span class="n">ContentRecSystemWeightsTest</span><span class="p">()</span>
+<span class="n">eval_model</span> <span class="o">=</span> <span class="n">ModelEvaluation</span><span class="p">()</span>
+<span class="n">recall</span><span class="p">,</span> <span class="n">accuracy</span> <span class="o">=</span> <span class="n">eval_model</span><span class="o">.</span><span class="n">evaluate_model</span><span class="p">(</span><span class="n">test_model</span><span class="p">,</span> <span class="n">combine_df</span><span class="p">,</span> <span class="n">project_df</span><span class="p">,</span> <span class="n">max_project</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Number of test users: 105
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>From the evaluation model above, the results show the recall metric increasing as the model builds a user profile over time. Initally, the model only obtains a recall of less than 10%. Once the model has 4 past donations to build a user profile, it successfully recommended 25.7% correct projects to the donor.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [20]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython"><pre><span></span><span class="n">recall</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[20]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>matrix([[0.0952381 , 0.16190476, 0.17142857, 0.25714286]])</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [21]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython"><pre><span></span><span class="n">accuracy</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[21]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>matrix([[0.13740458]])</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>After tweaking the weighting system (which influences how past donations on the donor's profile), it seems donations made earlier continue to play an important role in future donations. In the end, it seems a uniform weighting system for all donations resulted in the highest recall and accuracy metric from the evaluation model.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="6.-Future-Improvements">6. Future Improvements<a class="anchor-link" href="#6.-Future-Improvements">¶</a></h1><p>Recommendation systems are not limited to the content-based approach. Collaborative-based approach and a hybridization of content-based and collaborative-based models may help provide better recommendations.</p>
+<p>Reasons for choosing to build a content-based model is the <a href="http://blog.untrod.com/2016/06/simple-similar-products-recommendation-engine-in-python.html">'cold-start' problem</a> collaborative-based approach models suffer from, where new donor's have limited information for collaborative-based approach models to successfully recommend 'correct' projects. Since a majority of donors only donated a few times it makes perfect sense to start with a content-based model to encourage these donors to donate based on their profile.</p>
+<p>The model can be improved by:</p>
+<ul>
+<li>Creating a hybrid model of content-based and collaborative-based model, which may help provide better recommendations for regular donors.</li>
+<li>Make adjustments to the code for production. Since computations are expensive, user profile/data should be stored into a database.</li>
+<li>Incorporate non-text information into the model.</li>
+</ul>
+
+</div>
+</div>
+</div>
+ 
+
+</div>
+
+        <footer>
+            built with <a href="https://github.com/r4lv/jpy-flette">jpy-flette</a>
+        </footer>
+    </div>
+
+
+
+    
+    <script src="static/script.js"></script>
+
+</body>
+</html>
