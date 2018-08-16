@@ -2,7 +2,9 @@
 title: "Donor's Choice: Data Cleaning, EDA, Content-based Recommendation System"
 layout: post
 date: 2018-08-16 20:35
-tag: Recommendation System
+tag: 
+- Recommendation System
+- Python
 projects: true
 hidden: true # don't count this post in blog pagination
 description: "First time building a recommendation system"
