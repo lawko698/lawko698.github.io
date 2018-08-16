@@ -17,4 +17,4 @@ I always wanted to try and build a recommendation system from scratch. Luckily, 
 
 ---
 
-The notebooks can be found [here](http://github.com/lawko698/notebooks/donor%20choose/)
+The notebooks can be found [here](http://github.com/lawko698/notebooks/donor choose/)
