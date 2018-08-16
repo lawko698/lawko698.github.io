@@ -11,21 +11,6 @@ author: Lawrence
 externalLink: false
 ---
 
-
-Example of project - Indigo Minimalist Jekyll Template - [Demo](http://sergiokopplin.github.io/indigo/). This is a simple and minimalist template for Jekyll for those who likes to eat noodles.
----
-
-What has inside?
-
-- Gulp
-- BrowserSync
-- Stylus
-- SVG
-- Travis
-- No JS
-- [98/100](https://developers.google.com/speed/pagespeed/insights/?url=http%3A%2F%2Fsergiokopplin.github.io%2Findigo%2F)
+I always wanted to try and build a recommendation system from scratch. Luckly, Kaggle released a new dataset from [Donors Choose](https://www.donorschoose.org/) where the aim is to build targeted email campaigns recommending specific classroom requests to prior donors. [Part 1](lawko698.github.io/docs/EDA and Data Cleaning.html) contains the EDA and slight data cleaning of the datasets, while [Part 2](lawko698.github.io/docs/Recommendation System.html) contains the recommendation system.
 
 ---
-
-[Check it out](http://sergiokopplin.github.io/indigo/) here.
-If you need some help, just [tell me](http://github.com/sergiokopplin/indigo/issues).
