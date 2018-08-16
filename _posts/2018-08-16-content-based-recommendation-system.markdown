@@ -1,5 +1,5 @@
 ---
-title: "Donor's Choice: Data Cleaning, EDA, Content-based Recommendation System"
+title: "Donors Choice: Data Cleaning, EDA, Content-based Recommendation System"
 layout: post
 date: 2018-08-16 20:35
 tag: 
