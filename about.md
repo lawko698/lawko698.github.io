@@ -15,8 +15,8 @@ layout: page
 	<li>Pig</li>
 </ul>
 
-![jpg](http://lawko698.github.io/assets/images/AWS/AWS_Certified_Logo_SAA_588x300_Color.jpg)
-![jpg](http://lawko698.github.io/assets/images/AWS/AWS_Certified_Tag__SAA_588x300-Color.jpg)
+![jpg](http://lawko698.github.io/assets/images/AWS/AWS_Certified_Logo_SAA_294x230_Color.jpg)
+![jpg](http://lawko698.github.io/assets/images/AWS/AWS_Certified_Tag__SAA_294x230-Color.jpg)
 
 <h2>Projects</h2>
 
