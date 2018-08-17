@@ -15,9 +15,14 @@ layout: page
 	<li>Pig</li>
 </ul>
 
+<h2>Certification</h2>
+
 ![jpg](http://lawko698.github.io/assets/images/AWS/AWS_Certified_Logo_SAA_294x230_Color.jpg)
 
 ![jpg](http://lawko698.github.io/assets/images/AWS/AWS_Certified_Tag__SAA_294x230-Color.jpg)
+
+<li> License 68CLVZ31CEVQQ9W6 </li>
+[Verify Here](http://aws.amazon.com/verification)
 
 <h2>Projects</h2>
 
