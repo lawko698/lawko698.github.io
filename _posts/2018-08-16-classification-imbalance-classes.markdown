@@ -20,6 +20,8 @@ externalLink: false
 
 | Command | Description |
 | --- | --- |
+| git status | List all new or modified files |
+| git diff | Show file differences that haven't been staged |
 
 Based on the available information, prostate cancer is the most common diagnosed cancer in Australia and the third most common cause of cancer death in men. With 85% of cases diagnosed in men over 65 years of age, it is more common in older men. In addition, there are numerous parameters having direct effects on the development  of this kind of cancer including the age, and physical and mental well-being. The cancer is generally categorised in four different stages, namely stage I to stage IV, based on the severity of cancerous cells. Besides different types of physical urinary changes in men, some test and sampling including bone and CT scans are used to determine the spread of cancerous cells.
 
