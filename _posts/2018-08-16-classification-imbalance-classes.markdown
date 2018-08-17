@@ -163,7 +163,7 @@ head(df) # show the top 6 rows of the dataset
 ```
 
 
-<table>
+<table markdown="0>
 <thead><tr><th scope=col>ID</th><th scope=col>ATT1</th><th scope=col>ATT2</th><th scope=col>ATT3</th><th scope=col>ATT4</th><th scope=col>ATT5</th><th scope=col>ATT6</th><th scope=col>ATT7</th><th scope=col>ATT8</th><th scope=col>ATT9</th><th scope=col>ATT10</th><th scope=col>Result</th></tr></thead>
 <tbody>
 	<tr><td>1 </td><td>1 </td><td>4 </td><td>1 </td><td>4 </td><td>3 </td><td>7 </td><td> 1</td><td>2 </td><td>6 </td><td>8 </td><td>0 </td></tr>
