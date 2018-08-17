@@ -258,14 +258,11 @@ df[df$ATT1 == "?" | df$ATT3== "?" | df$ATT4== "?" | df$ATT5== "?",]
 ```
 
 
-<table>
-<thead><tr><th></th><th scope=col>ATT1</th><th scope=col>ATT2</th><th scope=col>ATT3</th><th scope=col>ATT4</th><th scope=col>ATT5</th><th scope=col>ATT6</th><th scope=col>ATT7</th><th scope=col>ATT8</th><th scope=col>ATT9</th><th scope=col>ATT10</th><th scope=col>Result</th></tr></thead>
-<tbody>
-	<tr><th scope=row>2</th><td>? </td><td>8 </td><td>9 </td><td>1 </td><td>1 </td><td>1 </td><td>1 </td><td>5 </td><td>6 </td><td>1 </td><td>1 </td></tr>
-	<tr><th scope=row>3</th><td>10</td><td>7 </td><td>? </td><td>7 </td><td>? </td><td>5 </td><td>2 </td><td>7 </td><td>1 </td><td>1 </td><td>2 </td></tr>
-	<tr><th scope=row>4</th><td>3 </td><td>4 </td><td>3 </td><td>? </td><td>2 </td><td>8 </td><td>4 </td><td>6 </td><td>7 </td><td>2 </td><td>1 </td></tr>
-</tbody>
-</table>
+||ATT1|ATT2|ATT3|ATT4|ATT5|ATT6|ATT7|ATT8|ATT9|ATT10|Result|
+|--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |
+|2|?|8|9|1|1|1|1|5|6|1|1|
+|3|10|7|?|7|?|5|2|7|1|1|2|
+|4|3|4|3|?|2|8|4|6|7|2|1|
 
 
 
@@ -320,22 +317,19 @@ round(describe(df.completecase), 3) # view more detailed statistics and round so
 ```
 
 
-<table>
-<thead><tr><th></th><th scope=col>vars</th><th scope=col>n</th><th scope=col>mean</th><th scope=col>sd</th><th scope=col>median</th><th scope=col>trimmed</th><th scope=col>mad</th><th scope=col>min</th><th scope=col>max</th><th scope=col>range</th><th scope=col>skew</th><th scope=col>kurtosis</th><th scope=col>se</th></tr></thead>
-<tbody>
-	<tr><th scope=row>ATT1</th><td> 1    </td><td>2997  </td><td>4.423 </td><td>2.721 </td><td>4     </td><td>4.228 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>0.429 </td><td>-0.960</td><td>0.050 </td></tr>
-	<tr><th scope=row>ATT2</th><td> 2    </td><td>2997  </td><td>4.499 </td><td>2.749 </td><td>4     </td><td>4.313 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>0.403 </td><td>-0.979</td><td>0.050 </td></tr>
-	<tr><th scope=row>ATT3</th><td> 3    </td><td>2997  </td><td>4.421 </td><td>2.713 </td><td>4     </td><td>4.226 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>0.434 </td><td>-0.963</td><td>0.050 </td></tr>
-	<tr><th scope=row>ATT4</th><td> 4    </td><td>2997  </td><td>4.440 </td><td>2.693 </td><td>4     </td><td>4.252 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>0.420 </td><td>-0.933</td><td>0.049 </td></tr>
-	<tr><th scope=row>ATT5</th><td> 5    </td><td>2997  </td><td>4.328 </td><td>2.669 </td><td>4     </td><td>4.124 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>0.481 </td><td>-0.877</td><td>0.049 </td></tr>
-	<tr><th scope=row>ATT6</th><td> 6    </td><td>2997  </td><td>4.431 </td><td>2.694 </td><td>4     </td><td>4.240 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>0.447 </td><td>-0.929</td><td>0.049 </td></tr>
-	<tr><th scope=row>ATT7</th><td> 7    </td><td>2997  </td><td>4.481 </td><td>2.741 </td><td>4     </td><td>4.300 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>0.392 </td><td>-1.036</td><td>0.050 </td></tr>
-	<tr><th scope=row>ATT8</th><td> 8    </td><td>2997  </td><td>4.476 </td><td>2.720 </td><td>4     </td><td>4.291 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>0.399 </td><td>-0.962</td><td>0.050 </td></tr>
-	<tr><th scope=row>ATT9</th><td> 9    </td><td>2997  </td><td>4.446 </td><td>2.679 </td><td>4     </td><td>4.254 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>0.429 </td><td>-0.900</td><td>0.049 </td></tr>
-	<tr><th scope=row>ATT10</th><td>10    </td><td>2997  </td><td>4.462 </td><td>2.697 </td><td>4     </td><td>4.276 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>0.407 </td><td>-0.940</td><td>0.049 </td></tr>
-	<tr><th scope=row>Result</th><td>11    </td><td>2997  </td><td>0.984 </td><td>0.915 </td><td>1     </td><td>0.898 </td><td>1.483 </td><td>0     </td><td> 3    </td><td>3     </td><td>0.545 </td><td>-0.646</td><td>0.017 </td></tr>
-</tbody>
-</table>
+||vars|n|mean|sd|median|trimmed|mad|min|max|range|skew|kurtosis|se|
+|--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |
+|ATT1|1|2997|4.423|2.721|4|4.228|2.965|1|10|9|0.429|-0.960|0.050|
+|ATT2|2|2997|4.499|2.749|4|4.313|2.965|1|10|9|0.403|-0.979|0.050|
+|ATT3|3|2997|4.421|2.713|4|4.226|2.965|1|10|9|0.434|-0.963|0.050|
+|ATT4|4|2997|4.440|2.693|4|4.252|2.965|1|10|9|0.420|-0.933|0.049|
+|ATT5|5|2997|4.328|2.669|4|4.124|2.965|1|10|9|0.481|-0.877|0.049|
+|ATT6|6|2997|4.431|2.694|4|4.240|2.965|1|10|9|0.447|-0.929|0.049|
+|ATT7|7|2997|4.481|2.741|4|4.300|2.965|1|10|9|0.392|-1.036|0.050|
+|ATT8|8|2997|4.476|2.720|4|4.291|2.965|1|10|9|0.399|-0.962|0.050|
+|ATT9|9|2997|4.446|2.679|4|4.254|2.965|1|10|9|0.429|-0.900|0.049|
+|ATT10|10|2997|4.462|2.697|4|4.276|2.965|1|10|9|0.407|-0.940|0.049|
+|Result|11|2997|0.984|0.915|1|0.898|1.483|0|3|3|0.545|-0.646|0.017|
 
 
 
@@ -356,22 +350,19 @@ round(describe(df.Result.zero), 3) # view more detailed statistics and round som
 ```
 
 
-<table>
-<thead><tr><th></th><th scope=col>vars</th><th scope=col>n</th><th scope=col>mean</th><th scope=col>sd</th><th scope=col>median</th><th scope=col>trimmed</th><th scope=col>mad</th><th scope=col>min</th><th scope=col>max</th><th scope=col>range</th><th scope=col>skew</th><th scope=col>kurtosis</th><th scope=col>se</th></tr></thead>
-<tbody>
-	<tr><th scope=row>ATT1</th><td> 1    </td><td>1082  </td><td>3.288 </td><td>2.274 </td><td>3     </td><td>2.965 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>0.988 </td><td> 0.230</td><td>0.069 </td></tr>
-	<tr><th scope=row>ATT2</th><td> 2    </td><td>1082  </td><td>3.375 </td><td>2.339 </td><td>3     </td><td>3.052 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>0.959 </td><td> 0.124</td><td>0.071 </td></tr>
-	<tr><th scope=row>ATT3</th><td> 3    </td><td>1082  </td><td>3.320 </td><td>2.270 </td><td>3     </td><td>3.018 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>0.928 </td><td> 0.023</td><td>0.069 </td></tr>
-	<tr><th scope=row>ATT4</th><td> 4    </td><td>1082  </td><td>3.411 </td><td>2.279 </td><td>3     </td><td>3.127 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>0.846 </td><td>-0.144</td><td>0.069 </td></tr>
-	<tr><th scope=row>ATT5</th><td> 5    </td><td>1082  </td><td>3.231 </td><td>2.170 </td><td>3     </td><td>2.925 </td><td>1.483 </td><td>1     </td><td>10    </td><td>9     </td><td>1.007 </td><td> 0.320</td><td>0.066 </td></tr>
-	<tr><th scope=row>ATT6</th><td> 6    </td><td>1082  </td><td>3.414 </td><td>2.268 </td><td>3     </td><td>3.129 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>0.844 </td><td>-0.156</td><td>0.069 </td></tr>
-	<tr><th scope=row>ATT7</th><td> 7    </td><td>1082  </td><td>3.380 </td><td>2.315 </td><td>3     </td><td>3.082 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>0.904 </td><td>-0.062</td><td>0.070 </td></tr>
-	<tr><th scope=row>ATT8</th><td> 8    </td><td>1082  </td><td>3.460 </td><td>2.301 </td><td>3     </td><td>3.172 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>0.847 </td><td>-0.061</td><td>0.070 </td></tr>
-	<tr><th scope=row>ATT9</th><td> 9    </td><td>1082  </td><td>3.361 </td><td>2.271 </td><td>3     </td><td>3.055 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>0.948 </td><td> 0.205</td><td>0.069 </td></tr>
-	<tr><th scope=row>ATT10</th><td>10    </td><td>1082  </td><td>3.359 </td><td>2.306 </td><td>3     </td><td>3.045 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>0.908 </td><td>-0.029</td><td>0.070 </td></tr>
-	<tr><th scope=row>Result</th><td>11    </td><td>1082  </td><td>0.000 </td><td>0.000 </td><td>0     </td><td>0.000 </td><td>0.000 </td><td>0     </td><td> 0    </td><td>0     </td><td>  NaN </td><td>   NaN</td><td>0.000 </td></tr>
-</tbody>
-</table>
+||vars|n|mean|sd|median|trimmed|mad|min|max|range|skew|kurtosis|se|
+|--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |
+|ATT1|1|1082|3.288|2.274|3|2.965|2.965|1|10|9|0.988|0.230|0.069|
+|ATT2|2|1082|3.375|2.339|3|3.052|2.965|1|10|9|0.959|0.124|0.071|
+|ATT3|3|1082|3.320|2.270|3|3.018|2.965|1|10|9|0.928|0.023|0.069|
+|ATT4|4|1082|3.411|2.279|3|3.127|2.965|1|10|9|0.846|-0.144|0.069|
+|ATT5|5|1082|3.231|2.170|3|2.925|1.483|1|10|9|1.007|0.320|0.066|
+|ATT6|6|1082|3.414|2.268|3|3.129|2.965|1|10|9|0.844|-0.156|0.069|
+|ATT7|7|1082|3.380|2.315|3|3.082|2.965|1|10|9|0.904|-0.062|0.070|
+|ATT8|8|1082|3.460|2.301|3|3.172|2.965|1|10|9|0.847|-0.061|0.070|
+|ATT9|9|1082|3.361|2.271|3|3.055|2.965|1|10|9|0.948|0.205|0.069|
+|ATT10|10|1082|3.359|2.306|3|3.045|2.965|1|10|9|0.908|-0.029|0.070|
+|Result|11|1082|0.000|0.000|0|0.000|0.000|0|0|0|NaN|NaN|0.000|
 
 
 
@@ -386,22 +377,19 @@ round(describe(df.Result.one[1:10,]), 3) # view more detailed statistics and rou
 ```
 
 
-<table>
-<thead><tr><th></th><th scope=col>vars</th><th scope=col>n</th><th scope=col>mean</th><th scope=col>sd</th><th scope=col>median</th><th scope=col>trimmed</th><th scope=col>mad</th><th scope=col>min</th><th scope=col>max</th><th scope=col>range</th><th scope=col>skew</th><th scope=col>kurtosis</th><th scope=col>se</th></tr></thead>
-<tbody>
-	<tr><th scope=row>ATT1</th><td> 1    </td><td>10    </td><td>4.3   </td><td>2.908 </td><td>4.0   </td><td>4.125 </td><td>2.965 </td><td>1     </td><td> 9    </td><td>8     </td><td> 0.269</td><td>-1.618</td><td>0.920 </td></tr>
-	<tr><th scope=row>ATT2</th><td> 2    </td><td>10    </td><td>4.0   </td><td>2.789 </td><td>2.5   </td><td>3.750 </td><td>1.483 </td><td>1     </td><td> 9    </td><td>8     </td><td> 0.553</td><td>-1.456</td><td>0.882 </td></tr>
-	<tr><th scope=row>ATT3</th><td> 3    </td><td>10    </td><td>4.4   </td><td>2.951 </td><td>3.0   </td><td>4.000 </td><td>1.483 </td><td>2     </td><td>10    </td><td>8     </td><td> 0.697</td><td>-1.237</td><td>0.933 </td></tr>
-	<tr><th scope=row>ATT4</th><td> 4    </td><td>10    </td><td>4.1   </td><td>2.644 </td><td>5.0   </td><td>4.000 </td><td>3.706 </td><td>1     </td><td> 8    </td><td>7     </td><td>-0.032</td><td>-1.744</td><td>0.836 </td></tr>
-	<tr><th scope=row>ATT5</th><td> 5    </td><td>10    </td><td>4.6   </td><td>2.875 </td><td>4.5   </td><td>4.500 </td><td>3.706 </td><td>1     </td><td> 9    </td><td>8     </td><td> 0.109</td><td>-1.634</td><td>0.909 </td></tr>
-	<tr><th scope=row>ATT6</th><td> 6    </td><td>10    </td><td>3.8   </td><td>2.098 </td><td>3.5   </td><td>3.750 </td><td>2.224 </td><td>1     </td><td> 7    </td><td>6     </td><td> 0.172</td><td>-1.723</td><td>0.663 </td></tr>
-	<tr><th scope=row>ATT7</th><td> 7    </td><td>10    </td><td>4.5   </td><td>2.953 </td><td>3.5   </td><td>4.250 </td><td>2.224 </td><td>1     </td><td>10    </td><td>9     </td><td> 0.559</td><td>-1.235</td><td>0.934 </td></tr>
-	<tr><th scope=row>ATT8</th><td> 8    </td><td>10    </td><td>5.3   </td><td>3.057 </td><td>6.0   </td><td>5.375 </td><td>3.706 </td><td>1     </td><td> 9    </td><td>8     </td><td>-0.255</td><td>-1.755</td><td>0.967 </td></tr>
-	<tr><th scope=row>ATT9</th><td> 9    </td><td>10    </td><td>5.2   </td><td>2.860 </td><td>5.0   </td><td>5.000 </td><td>3.706 </td><td>2     </td><td>10    </td><td>8     </td><td> 0.307</td><td>-1.405</td><td>0.904 </td></tr>
-	<tr><th scope=row>ATT10</th><td>10    </td><td>10    </td><td>5.4   </td><td>2.591 </td><td>5.5   </td><td>5.375 </td><td>2.224 </td><td>1     </td><td>10    </td><td>9     </td><td>-0.018</td><td>-0.982</td><td>0.819 </td></tr>
-	<tr><th scope=row>Result</th><td>11    </td><td>10    </td><td>1.0   </td><td>0.000 </td><td>1.0   </td><td>1.000 </td><td>0.000 </td><td>1     </td><td> 1    </td><td>0     </td><td>   NaN</td><td>   NaN</td><td>0.000 </td></tr>
-</tbody>
-</table>
+||vars|n|mean|sd|median|trimmed|mad|min|max|range|skew|kurtosis|se|
+|--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |
+|ATT1|1|10|4.3|2.908|4.0|4.125|2.965|1|9|8|0.269|-1.618|0.920|
+|ATT2|2|10|4.0|2.789|2.5|3.750|1.483|1|9|8|0.553|-1.456|0.882|
+|ATT3|3|10|4.4|2.951|3.0|4.000|1.483|2|10|8|0.697|-1.237|0.933|
+|ATT4|4|10|4.1|2.644|5.0|4.000|3.706|1|8|7|-0.032|-1.744|0.836|
+|ATT5|5|10|4.6|2.875|4.5|4.500|3.706|1|9|8|0.109|-1.634|0.909|
+|ATT6|6|10|3.8|2.098|3.5|3.750|2.224|1|7|6|0.172|-1.723|0.663|
+|ATT7|7|10|4.5|2.953|3.5|4.250|2.224|1|10|9|0.559|-1.235|0.934|
+|ATT8|8|10|5.3|3.057|6.0|5.375|3.706|1|9|8|-0.255|-1.755|0.967|
+|ATT9|9|10|5.2|2.860|5.0|5.000|3.706|2|10|8|0.307|-1.405|0.904|
+|ATT10|10|10|5.4|2.591|5.5|5.375|2.224|1|10|9|-0.018|-0.982|0.819|
+|Result|11|10|1.0|0.000|1.0|1.000|0.000|1|1|0|NaN|NaN|0.000|
 
 
 
@@ -416,22 +404,19 @@ round(describe(df.Result.two), 3) # view more detailed statistics and round some
 ```
 
 
-<table>
-<thead><tr><th></th><th scope=col>vars</th><th scope=col>n</th><th scope=col>mean</th><th scope=col>sd</th><th scope=col>median</th><th scope=col>trimmed</th><th scope=col>mad</th><th scope=col>min</th><th scope=col>max</th><th scope=col>range</th><th scope=col>skew</th><th scope=col>kurtosis</th><th scope=col>se</th></tr></thead>
-<tbody>
-	<tr><th scope=row>ATT1</th><td> 1    </td><td>641   </td><td>5.576 </td><td>2.737 </td><td>6     </td><td>5.628 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>-0.134</td><td>-1.099</td><td>0.108 </td></tr>
-	<tr><th scope=row>ATT2</th><td> 2    </td><td>641   </td><td>5.505 </td><td>2.746 </td><td>6     </td><td>5.526 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>-0.060</td><td>-1.149</td><td>0.108 </td></tr>
-	<tr><th scope=row>ATT3</th><td> 3    </td><td>641   </td><td>5.537 </td><td>2.747 </td><td>6     </td><td>5.538 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>-0.010</td><td>-1.174</td><td>0.108 </td></tr>
-	<tr><th scope=row>ATT4</th><td> 4    </td><td>641   </td><td>5.402 </td><td>2.665 </td><td>6     </td><td>5.398 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td> 0.006</td><td>-1.087</td><td>0.105 </td></tr>
-	<tr><th scope=row>ATT5</th><td> 5    </td><td>641   </td><td>5.431 </td><td>2.698 </td><td>6     </td><td>5.448 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>-0.051</td><td>-1.120</td><td>0.107 </td></tr>
-	<tr><th scope=row>ATT6</th><td> 6    </td><td>641   </td><td>5.515 </td><td>2.745 </td><td>6     </td><td>5.515 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td> 0.015</td><td>-1.176</td><td>0.108 </td></tr>
-	<tr><th scope=row>ATT7</th><td> 7    </td><td>641   </td><td>5.457 </td><td>2.757 </td><td>6     </td><td>5.478 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>-0.043</td><td>-1.198</td><td>0.109 </td></tr>
-	<tr><th scope=row>ATT8</th><td> 8    </td><td>641   </td><td>5.225 </td><td>2.739 </td><td>5     </td><td>5.218 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td> 0.031</td><td>-1.179</td><td>0.108 </td></tr>
-	<tr><th scope=row>ATT9</th><td> 9    </td><td>641   </td><td>5.343 </td><td>2.691 </td><td>5     </td><td>5.326 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td> 0.072</td><td>-1.048</td><td>0.106 </td></tr>
-	<tr><th scope=row>ATT10</th><td>10    </td><td>641   </td><td>5.746 </td><td>2.624 </td><td>6     </td><td>5.778 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>-0.071</td><td>-1.003</td><td>0.104 </td></tr>
-	<tr><th scope=row>Result</th><td>11    </td><td>641   </td><td>2.000 </td><td>0.000 </td><td>2     </td><td>2.000 </td><td>0.000 </td><td>2     </td><td> 2    </td><td>0     </td><td>   NaN</td><td>   NaN</td><td>0.000 </td></tr>
-</tbody>
-</table>
+||vars|n|mean|sd|median|trimmed|mad|min|max|range|skew|kurtosis|se|
+|--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |
+|ATT1|1|641|5.576|2.737|6|5.628|2.965|1|10|9|-0.134|-1.099|0.108|
+|ATT2|2|641|5.505|2.746|6|5.526|2.965|1|10|9|-0.060|-1.149|0.108|
+|ATT3|3|641|5.537|2.747|6|5.538|2.965|1|10|9|-0.010|-1.174|0.108|
+|ATT4|4|641|5.402|2.665|6|5.398|2.965|1|10|9|0.006|-1.087|0.105|
+|ATT5|5|641|5.431|2.698|6|5.448|2.965|1|10|9|-0.051|-1.120|0.107|
+|ATT6|6|641|5.515|2.745|6|5.515|2.965|1|10|9|0.015|-1.176|0.108|
+|ATT7|7|641|5.457|2.757|6|5.478|2.965|1|10|9|-0.043|-1.198|0.109|
+|ATT8|8|641|5.225|2.739|5|5.218|2.965|1|10|9|0.031|-1.179|0.108|
+|ATT9|9|641|5.343|2.691|5|5.326|2.965|1|10|9|0.072|-1.048|0.106|
+|ATT10|10|641|5.746|2.624|6|5.778|2.965|1|10|9|-0.071|-1.003|0.104|
+|Result|11|641|2.000|0.000|2|2.000|0.000|2|2|0|NaN|NaN|0.000|
 
 
 
@@ -446,22 +431,19 @@ round(describe(df.Result.three), 3) # view more detailed statistics and round so
 ```
 
 
-<table>
-<thead><tr><th></th><th scope=col>vars</th><th scope=col>n</th><th scope=col>mean</th><th scope=col>sd</th><th scope=col>median</th><th scope=col>trimmed</th><th scope=col>mad</th><th scope=col>min</th><th scope=col>max</th><th scope=col>range</th><th scope=col>skew</th><th scope=col>kurtosis</th><th scope=col>se</th></tr></thead>
-<tbody>
-	<tr><th scope=row>ATT1</th><td> 1    </td><td>196   </td><td>6.526 </td><td>2.581 </td><td>7     </td><td>6.665 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>-0.368</td><td>-0.875</td><td>0.184 </td></tr>
-	<tr><th scope=row>ATT2</th><td> 2    </td><td>196   </td><td>6.500 </td><td>2.628 </td><td>7     </td><td>6.639 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>-0.357</td><td>-0.945</td><td>0.188 </td></tr>
-	<tr><th scope=row>ATT3</th><td> 3    </td><td>196   </td><td>6.485 </td><td>2.849 </td><td>7     </td><td>6.684 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>-0.497</td><td>-0.985</td><td>0.204 </td></tr>
-	<tr><th scope=row>ATT4</th><td> 4    </td><td>196   </td><td>6.811 </td><td>2.518 </td><td>7     </td><td>7.019 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>-0.553</td><td>-0.648</td><td>0.180 </td></tr>
-	<tr><th scope=row>ATT5</th><td> 5    </td><td>196   </td><td>6.480 </td><td>2.553 </td><td>7     </td><td>6.633 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>-0.426</td><td>-0.809</td><td>0.182 </td></tr>
-	<tr><th scope=row>ATT6</th><td> 6    </td><td>196   </td><td>6.138 </td><td>2.844 </td><td>6     </td><td>6.241 </td><td>4.448 </td><td>1     </td><td>10    </td><td>9     </td><td>-0.254</td><td>-1.223</td><td>0.203 </td></tr>
-	<tr><th scope=row>ATT7</th><td> 7    </td><td>196   </td><td>6.372 </td><td>2.783 </td><td>7     </td><td>6.532 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>-0.459</td><td>-1.038</td><td>0.199 </td></tr>
-	<tr><th scope=row>ATT8</th><td> 8    </td><td>196   </td><td>6.668 </td><td>2.690 </td><td>7     </td><td>6.905 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>-0.600</td><td>-0.683</td><td>0.192 </td></tr>
-	<tr><th scope=row>ATT9</th><td> 9    </td><td>196   </td><td>6.531 </td><td>2.595 </td><td>7     </td><td>6.690 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>-0.394</td><td>-0.834</td><td>0.185 </td></tr>
-	<tr><th scope=row>ATT10</th><td>10    </td><td>196   </td><td>6.352 </td><td>2.628 </td><td>7     </td><td>6.462 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>-0.285</td><td>-1.147</td><td>0.188 </td></tr>
-	<tr><th scope=row>Result</th><td>11    </td><td>196   </td><td>3.000 </td><td>0.000 </td><td>3     </td><td>3.000 </td><td>0.000 </td><td>3     </td><td> 3    </td><td>0     </td><td>   NaN</td><td>   NaN</td><td>0.000 </td></tr>
-</tbody>
-</table>
+||vars|n|mean|sd|median|trimmed|mad|min|max|range|skew|kurtosis|se|
+|--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |
+|ATT1|1|196|6.526|2.581|7|6.665|2.965|1|10|9|-0.368|-0.875|0.184|
+|ATT2|2|196|6.500|2.628|7|6.639|2.965|1|10|9|-0.357|-0.945|0.188|
+|ATT3|3|196|6.485|2.849|7|6.684|2.965|1|10|9|-0.497|-0.985|0.204|
+|ATT4|4|196|6.811|2.518|7|7.019|2.965|1|10|9|-0.553|-0.648|0.180|
+|ATT5|5|196|6.480|2.553|7|6.633|2.965|1|10|9|-0.426|-0.809|0.182|
+|ATT6|6|196|6.138|2.844|6|6.241|4.448|1|10|9|-0.254|-1.223|0.203|
+|ATT7|7|196|6.372|2.783|7|6.532|2.965|1|10|9|-0.459|-1.038|0.199|
+|ATT8|8|196|6.668|2.690|7|6.905|2.965|1|10|9|-0.600|-0.683|0.192|
+|ATT9|9|196|6.531|2.595|7|6.690|2.965|1|10|9|-0.394|-0.834|0.185|
+|ATT10|10|196|6.352|2.628|7|6.462|2.965|1|10|9|-0.285|-1.147|0.188|
+|Result|11|196|3.000|0.000|3|3.000|0.000|3|3|0|NaN|NaN|0.000|
 
 
 
@@ -622,21 +604,18 @@ round(cor(df.completecase[-c(1)]),3) #pearson correlation by default
 ```
 
 
-<table>
-<thead><tr><th></th><th scope=col>ATT2</th><th scope=col>ATT3</th><th scope=col>ATT4</th><th scope=col>ATT5</th><th scope=col>ATT6</th><th scope=col>ATT7</th><th scope=col>ATT8</th><th scope=col>ATT9</th><th scope=col>ATT10</th><th scope=col>Result</th></tr></thead>
-<tbody>
-	<tr><th scope=row>ATT2</th><td>1.000</td><td>0.067</td><td>0.062</td><td>0.032</td><td>0.039</td><td>0.011</td><td>0.030</td><td>0.094</td><td>0.073</td><td>0.351</td></tr>
-	<tr><th scope=row>ATT3</th><td>0.067</td><td>1.000</td><td>0.047</td><td>0.065</td><td>0.040</td><td>0.031</td><td>0.026</td><td>0.060</td><td>0.085</td><td>0.365</td></tr>
-	<tr><th scope=row>ATT4</th><td>0.062</td><td>0.047</td><td>1.000</td><td>0.080</td><td>0.045</td><td>0.059</td><td>0.021</td><td>0.028</td><td>0.083</td><td>0.360</td></tr>
-	<tr><th scope=row>ATT5</th><td>0.032</td><td>0.065</td><td>0.080</td><td>1.000</td><td>0.050</td><td>0.071</td><td>0.029</td><td>0.084</td><td>0.084</td><td>0.374</td></tr>
-	<tr><th scope=row>ATT6</th><td>0.039</td><td>0.040</td><td>0.045</td><td>0.050</td><td>1.000</td><td>0.023</td><td>0.041</td><td>0.067</td><td>0.063</td><td>0.334</td></tr>
-	<tr><th scope=row>ATT7</th><td>0.011</td><td>0.031</td><td>0.059</td><td>0.071</td><td>0.023</td><td>1.000</td><td>0.078</td><td>0.037</td><td>0.067</td><td>0.341</td></tr>
-	<tr><th scope=row>ATT8</th><td>0.030</td><td>0.026</td><td>0.021</td><td>0.029</td><td>0.041</td><td>0.078</td><td>1.000</td><td>0.043</td><td>0.034</td><td>0.327</td></tr>
-	<tr><th scope=row>ATT9</th><td>0.094</td><td>0.060</td><td>0.028</td><td>0.084</td><td>0.067</td><td>0.037</td><td>0.043</td><td>1.000</td><td>0.012</td><td>0.350</td></tr>
-	<tr><th scope=row>ATT10</th><td>0.073</td><td>0.085</td><td>0.083</td><td>0.084</td><td>0.063</td><td>0.067</td><td>0.034</td><td>0.012</td><td>1.000</td><td>0.373</td></tr>
-	<tr><th scope=row>Result</th><td>0.351</td><td>0.365</td><td>0.360</td><td>0.374</td><td>0.334</td><td>0.341</td><td>0.327</td><td>0.350</td><td>0.373</td><td>1.000</td></tr>
-</tbody>
-</table>
+||ATT2|ATT3|ATT4|ATT5|ATT6|ATT7|ATT8|ATT9|ATT10|Result|
+|--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |
+|ATT2|1.000|0.067|0.062|0.032|0.039|0.011|0.030|0.094|0.073|0.351|
+|ATT3|0.067|1.000|0.047|0.065|0.040|0.031|0.026|0.060|0.085|0.365|
+|ATT4|0.062|0.047|1.000|0.080|0.045|0.059|0.021|0.028|0.083|0.360|
+|ATT5|0.032|0.065|0.080|1.000|0.050|0.071|0.029|0.084|0.084|0.374|
+|ATT6|0.039|0.040|0.045|0.050|1.000|0.023|0.041|0.067|0.063|0.334|
+|ATT7|0.011|0.031|0.059|0.071|0.023|1.000|0.078|0.037|0.067|0.341|
+|ATT8|0.030|0.026|0.021|0.029|0.041|0.078|1.000|0.043|0.034|0.327|
+|ATT9|0.094|0.060|0.028|0.084|0.067|0.037|0.043|1.000|0.012|0.350|
+|ATT10|0.073|0.085|0.083|0.084|0.063|0.067|0.034|0.012|1.000|0.373|
+|Result|0.351|0.365|0.360|0.374|0.334|0.341|0.327|0.350|0.373|1.000|
 
 
 
@@ -705,20 +684,18 @@ importance(forest_att1)
 ```
 
 
-<table>
-<thead><tr><th></th><th scope=col>%IncMSE</th><th scope=col>IncNodePurity</th></tr></thead>
-<tbody>
-	<tr><th scope=row>ATT2</th><td>0.7335200</td><td>2308.859 </td></tr>
-	<tr><th scope=row>ATT3</th><td>4.4306467</td><td>2119.311 </td></tr>
-	<tr><th scope=row>ATT4</th><td>0.4923638</td><td>2342.945 </td></tr>
-	<tr><th scope=row>ATT5</th><td>1.4583184</td><td>2350.110 </td></tr>
-	<tr><th scope=row>ATT6</th><td>2.4575233</td><td>2255.329 </td></tr>
-	<tr><th scope=row>ATT7</th><td>2.3674374</td><td>2142.071 </td></tr>
-	<tr><th scope=row>ATT8</th><td>1.4721853</td><td>2348.368 </td></tr>
-	<tr><th scope=row>ATT9</th><td>0.8466364</td><td>2366.720 </td></tr>
-	<tr><th scope=row>ATT10</th><td>1.5278499</td><td>2292.749 </td></tr>
-</tbody>
-</table>
+||%IncMSE|IncNodePurity|
+|--- |--- |--- |
+|ATT2|0.7335200|2308.859|
+|ATT3|4.4306467|2119.311|
+|ATT4|0.4923638|2342.945|
+|ATT5|1.4583184|2350.110|
+|ATT6|2.4575233|2255.329|
+|ATT7|2.3674374|2142.071|
+|ATT8|1.4721853|2348.368|
+|ATT9|0.8466364|2366.720|
+|ATT10|1.5278499|2292.749|
+
 
 
 
@@ -758,14 +735,11 @@ df[c(2,3,4),]
 ```
 
 
-<table>
-<thead><tr><th></th><th scope=col>ATT1</th><th scope=col>ATT2</th><th scope=col>ATT3</th><th scope=col>ATT4</th><th scope=col>ATT5</th><th scope=col>ATT6</th><th scope=col>ATT7</th><th scope=col>ATT8</th><th scope=col>ATT9</th><th scope=col>ATT10</th><th scope=col>Result</th><th scope=col>ATT1_imp</th><th scope=col>ATT3_imp</th><th scope=col>ATT4_imp</th><th scope=col>ATT5_imp</th></tr></thead>
-<tbody>
-	<tr><th scope=row>2</th><td>9    </td><td>8    </td><td>9    </td><td>1    </td><td>1    </td><td>1    </td><td>1    </td><td>5    </td><td>6    </td><td>1    </td><td>1    </td><td> TRUE</td><td>FALSE</td><td>FALSE</td><td>FALSE</td></tr>
-	<tr><th scope=row>3</th><td>10   </td><td>7    </td><td>5    </td><td>7    </td><td>5    </td><td>5    </td><td>2    </td><td>7    </td><td>1    </td><td>1    </td><td>2    </td><td>FALSE</td><td> TRUE</td><td>FALSE</td><td> TRUE</td></tr>
-	<tr><th scope=row>4</th><td>3    </td><td>4    </td><td>3    </td><td>5    </td><td>2    </td><td>8    </td><td>4    </td><td>6    </td><td>7    </td><td>2    </td><td>1    </td><td>FALSE</td><td>FALSE</td><td> TRUE</td><td>FALSE</td></tr>
-</tbody>
-</table>
+||ATT1|ATT2|ATT3|ATT4|ATT5|ATT6|ATT7|ATT8|ATT9|ATT10|Result|ATT1_imp|ATT3_imp|ATT4_imp|ATT5_imp|
+|--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |
+|2|9|8|9|1|1|1|1|5|6|1|1|TRUE|FALSE|FALSE|FALSE|
+|3|10|7|5|7|5|5|2|7|1|1|2|FALSE|TRUE|FALSE|TRUE|
+|4|3|4|3|5|2|8|4|6|7|2|1|FALSE|FALSE|TRUE|FALSE|
 
 
 
@@ -811,22 +785,19 @@ round(describe(df.imputed), 3) # view more detailed statistics and round some va
     
 
 
-<table>
-<thead><tr><th></th><th scope=col>vars</th><th scope=col>n</th><th scope=col>mean</th><th scope=col>sd</th><th scope=col>median</th><th scope=col>trimmed</th><th scope=col>mad</th><th scope=col>min</th><th scope=col>max</th><th scope=col>range</th><th scope=col>skew</th><th scope=col>kurtosis</th><th scope=col>se</th></tr></thead>
-<tbody>
-	<tr><th scope=row>ATT1</th><td> 1    </td><td>3000  </td><td>4.426 </td><td>2.723 </td><td>4     </td><td>4.231 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>0.429 </td><td>-0.962</td><td>0.050 </td></tr>
-	<tr><th scope=row>ATT2</th><td> 2    </td><td>3000  </td><td>4.501 </td><td>2.748 </td><td>4     </td><td>4.315 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>0.402 </td><td>-0.980</td><td>0.050 </td></tr>
-	<tr><th scope=row>ATT3</th><td> 3    </td><td>3000  </td><td>4.422 </td><td>2.713 </td><td>4     </td><td>4.228 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>0.434 </td><td>-0.964</td><td>0.050 </td></tr>
-	<tr><th scope=row>ATT4</th><td> 4    </td><td>3000  </td><td>4.440 </td><td>2.693 </td><td>4     </td><td>4.252 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>0.419 </td><td>-0.934</td><td>0.049 </td></tr>
-	<tr><th scope=row>ATT5</th><td> 5    </td><td>3000  </td><td>4.326 </td><td>2.668 </td><td>4     </td><td>4.122 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>0.481 </td><td>-0.876</td><td>0.049 </td></tr>
-	<tr><th scope=row>ATT6</th><td> 6    </td><td>3000  </td><td>4.431 </td><td>2.694 </td><td>4     </td><td>4.240 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>0.446 </td><td>-0.930</td><td>0.049 </td></tr>
-	<tr><th scope=row>ATT7</th><td> 7    </td><td>3000  </td><td>4.479 </td><td>2.741 </td><td>4     </td><td>4.297 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>0.393 </td><td>-1.035</td><td>0.050 </td></tr>
-	<tr><th scope=row>ATT8</th><td> 8    </td><td>3000  </td><td>4.478 </td><td>2.720 </td><td>4     </td><td>4.292 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>0.398 </td><td>-0.962</td><td>0.050 </td></tr>
-	<tr><th scope=row>ATT9</th><td> 9    </td><td>3000  </td><td>4.446 </td><td>2.678 </td><td>4     </td><td>4.254 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>0.428 </td><td>-0.901</td><td>0.049 </td></tr>
-	<tr><th scope=row>ATT10</th><td>10    </td><td>3000  </td><td>4.459 </td><td>2.698 </td><td>4     </td><td>4.271 </td><td>2.965 </td><td>1     </td><td>10    </td><td>9     </td><td>0.409 </td><td>-0.940</td><td>0.049 </td></tr>
-	<tr><th scope=row>Result*</th><td>11    </td><td>3000  </td><td>1.984 </td><td>0.914 </td><td>2     </td><td>1.898 </td><td>1.483 </td><td>1     </td><td> 4    </td><td>3     </td><td>0.544 </td><td>-0.646</td><td>0.017 </td></tr>
-</tbody>
-</table>
+||vars|n|mean|sd|median|trimmed|mad|min|max|range|skew|kurtosis|se|
+|--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |
+|ATT1|1|3000|4.426|2.723|4|4.231|2.965|1|10|9|0.429|-0.962|0.050|
+|ATT2|2|3000|4.501|2.748|4|4.315|2.965|1|10|9|0.402|-0.980|0.050|
+|ATT3|3|3000|4.422|2.713|4|4.228|2.965|1|10|9|0.434|-0.964|0.050|
+|ATT4|4|3000|4.440|2.693|4|4.252|2.965|1|10|9|0.419|-0.934|0.049|
+|ATT5|5|3000|4.326|2.668|4|4.122|2.965|1|10|9|0.481|-0.876|0.049|
+|ATT6|6|3000|4.431|2.694|4|4.240|2.965|1|10|9|0.446|-0.930|0.049|
+|ATT7|7|3000|4.479|2.741|4|4.297|2.965|1|10|9|0.393|-1.035|0.050|
+|ATT8|8|3000|4.478|2.720|4|4.292|2.965|1|10|9|0.398|-0.962|0.050|
+|ATT9|9|3000|4.446|2.678|4|4.254|2.965|1|10|9|0.428|-0.901|0.049|
+|ATT10|10|3000|4.459|2.698|4|4.271|2.965|1|10|9|0.409|-0.940|0.049|
+|Result*|11|3000|1.984|0.914|2|1.898|1.483|1|4|3|0.544|-0.646|0.017|
 
 
 
@@ -1189,21 +1160,18 @@ importance(rf.fit)
 ```
 
 
-<table>
-<thead><tr><th></th><th scope=col>0</th><th scope=col>1</th><th scope=col>2</th><th scope=col>3</th><th scope=col>MeanDecreaseAccuracy</th><th scope=col>MeanDecreaseGini</th></tr></thead>
-<tbody>
-	<tr><th scope=row>ATT1</th><td>59.02299</td><td>33.49498</td><td>39.75936</td><td>26.56463</td><td>77.75822</td><td>197.1023</td></tr>
-	<tr><th scope=row>ATT2</th><td>50.87716</td><td>30.72737</td><td>31.26563</td><td>22.23357</td><td>62.98704</td><td>211.7276</td></tr>
-	<tr><th scope=row>ATT3</th><td>51.32102</td><td>30.46145</td><td>33.57914</td><td>20.88016</td><td>65.77979</td><td>212.7885</td></tr>
-	<tr><th scope=row>ATT4</th><td>44.74751</td><td>26.84208</td><td>25.29077</td><td>30.95077</td><td>62.04120</td><td>202.7325</td></tr>
-	<tr><th scope=row>ATT5</th><td>51.23424</td><td>27.38835</td><td>32.40236</td><td>28.98439</td><td>62.73447</td><td>205.4879</td></tr>
-	<tr><th scope=row>ATT6</th><td>45.99043</td><td>23.97962</td><td>30.67019</td><td>14.31418</td><td>54.30447</td><td>204.2850</td></tr>
-	<tr><th scope=row>ATT7</th><td>54.49510</td><td>28.43069</td><td>25.68874</td><td>18.98994</td><td>62.83274</td><td>208.8188</td></tr>
-	<tr><th scope=row>ATT8</th><td>48.98404</td><td>30.94731</td><td>24.10396</td><td>27.82564</td><td>63.82490</td><td>215.0017</td></tr>
-	<tr><th scope=row>ATT9</th><td>52.61634</td><td>27.25110</td><td>25.33940</td><td>24.80699</td><td>63.03772</td><td>208.7095</td></tr>
-	<tr><th scope=row>ATT10</th><td>49.68486</td><td>31.14477</td><td>41.07969</td><td>20.68647</td><td>68.89368</td><td>202.3407</td></tr>
-</tbody>
-</table>
+||0|1|2|3|MeanDecreaseAccuracy|MeanDecreaseGini|
+|--- |--- |--- |--- |--- |--- |--- |
+|ATT1|59.02299|33.49498|39.75936|26.56463|77.75822|197.1023|
+|ATT2|50.87716|30.72737|31.26563|22.23357|62.98704|211.7276|
+|ATT3|51.32102|30.46145|33.57914|20.88016|65.77979|212.7885|
+|ATT4|44.74751|26.84208|25.29077|30.95077|62.04120|202.7325|
+|ATT5|51.23424|27.38835|32.40236|28.98439|62.73447|205.4879|
+|ATT6|45.99043|23.97962|30.67019|14.31418|54.30447|204.2850|
+|ATT7|54.49510|28.43069|25.68874|18.98994|62.83274|208.8188|
+|ATT8|48.98404|30.94731|24.10396|27.82564|63.82490|215.0017|
+|ATT9|52.61634|27.25110|25.33940|24.80699|63.03772|208.7095|
+|ATT10|49.68486|31.14477|41.07969|20.68647|68.89368|202.3407|
 
 
 
