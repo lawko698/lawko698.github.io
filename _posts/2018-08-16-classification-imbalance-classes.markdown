@@ -503,7 +503,7 @@ ggplot(data=as.data.frame(p.comp$x), aes(x = PC1, y = PC2)) +
 
 
 
-![png](Detecting%20Prostate%20Cancers_files/Detecting%20Prostate%20Cancers_36_1.png)
+![png](https://lawko698.github.io/assets/images/Detecting%20Prostate%20Cancers_files/Detecting%20Prostate%20Cancers_36_1.png)
 
 
 We can see that each class is mostly contained within their own area, but there are instances it goes into another area dominated by another class.
