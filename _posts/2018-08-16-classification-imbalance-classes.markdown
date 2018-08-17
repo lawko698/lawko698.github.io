@@ -523,15 +523,15 @@ for (i in 1:11) {
 ```
 
 
-![png](Detecting%20Prostate%20Cancers_files/Detecting%20Prostate%20Cancers_39_0.png)
+![png](https://lawko698.github.io/assets/images/Detecting%20Prostate%20Cancers_files/Detecting%20Prostate%20Cancers_39_0.png)
 
 
 
-![png](Detecting%20Prostate%20Cancers_files/Detecting%20Prostate%20Cancers_39_1.png)
+![png](https://lawko698.github.io/assets/images/Detecting%20Prostate%20Cancers_files/Detecting%20Prostate%20Cancers_39_1.png)
 
 
 
-![png](Detecting%20Prostate%20Cancers_files/Detecting%20Prostate%20Cancers_39_2.png)
+![png](https://lawko698.github.io/assets/images/Detecting%20Prostate%20Cancers_files/Detecting%20Prostate%20Cancers_39_2.png)
 
 
 The variables seem to be distributed well but we should plot histograms to understand the distribution more clearly.
@@ -611,7 +611,7 @@ grid.arrange(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, ncol = 2)
     
 
 
-![png](Detecting%20Prostate%20Cancers_files/Detecting%20Prostate%20Cancers_41_1.png)
+![png](https://lawko698.github.io/assets/images/Detecting%20Prostate%20Cancers_files/Detecting%20Prostate%20Cancers_41_1.png)
 
 
 From the histogram, we do not see a normal distribution in any 10 attributes. Interestingly, in attribute 1,3,4,5, as you move along the x-axis the number of points at value 3 dips quite sharply. Overall, there is a slow declining trend as you move along the x-axis. Since it is not heavily skewed, a log transformation will not convert it to a normal distribution.
@@ -654,7 +654,7 @@ scatterplotMatrix(~ATT1 + ATT2 + ATT3 + ATT4 + ATT5 + ATT6 + ATT7 + ATT8 + ATT9 
 ```
 
 
-![png](Detecting%20Prostate%20Cancers_files/Detecting%20Prostate%20Cancers_47_0.png)
+![png](https://lawko698.github.io/assets/images/Detecting%20Prostate%20Cancers_files/Detecting%20Prostate%20Cancers_47_0.png)
 
 
 The scatter graph confirms our correlation matrix, in which the data has no linear relationship between any independent variables which imply no multicollinearity. However, each independent variable has a linear relationship with the result variable.
@@ -864,7 +864,7 @@ ggplot(data=as.data.frame(p.comp.imputed$x), aes(x = PC1, y = PC2)) +
 
 
 
-![png](Detecting%20Prostate%20Cancers_files/Detecting%20Prostate%20Cancers_62_1.png)
+![png](https://lawko698.github.io/assets/images/Detecting%20Prostate%20Cancers_files/Detecting%20Prostate%20Cancers_62_1.png)
 
 
 ## Training and Test Data
@@ -982,7 +982,7 @@ ggtitle("LDA Model") + theme_minimal()
 
 
 
-![png](Detecting%20Prostate%20Cancers_files/Detecting%20Prostate%20Cancers_75_1.png)
+![png](https://lawko698.github.io/assets/images/Detecting%20Prostate%20Cancers_files/Detecting%20Prostate%20Cancers_75_1.png)
 
 
 The AUC score is a healthy 0.973 and the graph shows it manages to classifiy most of the observations correctly. However, result 3 proves to be hard to classify it might not be linearly separatable. In addition, it has problems classifying points that spill into different regions between result 0 and 1, result 1 and 2.  
@@ -1063,7 +1063,7 @@ ggtitle("QDA Model") + theme_minimal()
 
 
 
-![png](Detecting%20Prostate%20Cancers_files/Detecting%20Prostate%20Cancers_84_1.png)
+![png](https://lawko698.github.io/assets/images/Detecting%20Prostate%20Cancers_files/Detecting%20Prostate%20Cancers_84_1.png)
 
 
 The AUC score has improved to 0.9899 and the graph shows it manages to classifiy most of the observations correctly similar to LDA. QDA performs slightly better than QDA.
@@ -1100,7 +1100,7 @@ plot(multilogit.cvfit)
 ```
 
 
-![png](Detecting%20Prostate%20Cancers_files/Detecting%20Prostate%20Cancers_90_0.png)
+![png](https://lawko698.github.io/assets/images/Detecting%20Prostate%20Cancers_files/Detecting%20Prostate%20Cancers_90_0.png)
 
 
 
@@ -1252,7 +1252,7 @@ ggtitle("Random Forest Model") + theme_minimal()
 
 
 
-![png](Detecting%20Prostate%20Cancers_files/Detecting%20Prostate%20Cancers_104_1.png)
+![png](https://lawko698.github.io/assets/images/Detecting%20Prostate%20Cancers_files/Detecting%20Prostate%20Cancers_104_1.png)
 
 
 The AUC score is a decent 90.19% and the graph shows it manages to classifiy most of the observations correctly. However, its performance compared to the earlier models are a bit lacking. We can see result 3 proves to be hardest to classify as it mostly classifies it as result 2.
