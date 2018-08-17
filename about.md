@@ -16,7 +16,7 @@ layout: page
 </ul>
 
 ![jpg](http://lawko698.github.io/assets/images/AWS/AWS_Certified_Logo_SAA_294x230_Color.jpg)
-![jpg](http://lawko698.github.io/assets/images/AWS/AWS_Certified_Tag__SAA_294x230-Color.jpg)
+![jpg](http://lawko698.github.io/assets/images/AWS/AWS_Certified_Tag__SAA_294x230_Color.jpg)
 
 <h2>Projects</h2>
 
