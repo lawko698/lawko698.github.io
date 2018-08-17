@@ -18,20 +18,6 @@ externalLink: false
 - Date: 30/10/2017
 - R version: 3.5.1
 
-|   | ddd  |   |   |   |   |   |   |   |   |   |   |   |
-|:-:|:-:|:-:|:-:|:-:|---|---|---|---|---|---|---|---|
-|   |   |   |   |   |   |   |   |   |   |   |   |   |
-|   |   |   |   |   |   |   |   |   |   |   |   |   |
-|   |   |   |   |   |   |   |   |   |   |   |   |   |
-|   |   |   |   |   |   |   |   |   |   |   |   |   |
-|   |   |   |   |   |   |   |   |   |   |   |   |   |
-|   |   |   |   |   |   |   |   |   |   |   |   |   |
-|   |   |   |   |   |   |   |   |   |   |   |   |   |
-|   |   |   |   |   |   |   |   |   |   |   |   |   |
-|   |   |   |   |   |   |   |   |   |   |   |   |   |
-|   |   |   |   |   |   |   |   |   |   |   |   |   |
-|   |   |   |   |   |   |   |   |   |   |   |   |   |
-
 Based on the available information, prostate cancer is the most common diagnosed cancer in Australia and the third most common cause of cancer death in men. With 85% of cases diagnosed in men over 65 years of age, it is more common in older men. In addition, there are numerous parameters having direct effects on the development  of this kind of cancer including the age, and physical and mental well-being. The cancer is generally categorised in four different stages, namely stage I to stage IV, based on the severity of cancerous cells. Besides different types of physical urinary changes in men, some test and sampling including bone and CT scans are used to determine the spread of cancerous cells.
 
 The dataset obtained from a prostate cancer lab containing 3000 observations with 10 numerical features. In addition, there is a column showing the result of the test (class attribute), which is 0 for curable, and 1 for tumour stage, 2 for node stage and 3 for incurable cancers. All the features are numerical measurements rounded to the closest integer number between 1 and 10.
@@ -164,7 +150,7 @@ dim(df) #We have 3000 records with 12 attributes.
 ```
 
 
-<ol class=list-inline>
+<ol>
 	<li>3000</li>
 	<li>12</li>
 </ol>
@@ -177,17 +163,14 @@ head(df) # show the top 6 rows of the dataset
 ```
 
 
-<table>
-<thead><tr><th scope=col>ID</th><th scope=col>ATT1</th><th scope=col>ATT2</th><th scope=col>ATT3</th><th scope=col>ATT4</th><th scope=col>ATT5</th><th scope=col>ATT6</th><th scope=col>ATT7</th><th scope=col>ATT8</th><th scope=col>ATT9</th><th scope=col>ATT10</th><th scope=col>Result</th></tr></thead>
-<tbody>
-	<tr><td>1 </td><td>1 </td><td>4 </td><td>1 </td><td>4 </td><td>3 </td><td>7 </td><td> 1</td><td>2 </td><td>6 </td><td>8 </td><td>0 </td></tr>
-	<tr><td>2 </td><td>? </td><td>8 </td><td>9 </td><td>1 </td><td>1 </td><td>1 </td><td> 1</td><td>5 </td><td>6 </td><td>1 </td><td>1 </td></tr>
-	<tr><td>3 </td><td>10</td><td>7 </td><td>? </td><td>7 </td><td>? </td><td>5 </td><td> 2</td><td>7 </td><td>1 </td><td>1 </td><td>2 </td></tr>
-	<tr><td>4 </td><td>3 </td><td>4 </td><td>3 </td><td>? </td><td>2 </td><td>8 </td><td> 4</td><td>6 </td><td>7 </td><td>2 </td><td>1 </td></tr>
-	<tr><td>5 </td><td>3 </td><td>5 </td><td>2 </td><td>1 </td><td>6 </td><td>5 </td><td> 3</td><td>1 </td><td>7 </td><td>1 </td><td>0 </td></tr>
-	<tr><td>6 </td><td>2 </td><td>7 </td><td>3 </td><td>2 </td><td>1 </td><td>4 </td><td>10</td><td>3 </td><td>9 </td><td>5 </td><td>1 </td></tr>
-</tbody>
-</table>
+|ID|ATT1|ATT2|ATT3|ATT4|ATT5|ATT6|ATT7|ATT8|ATT9|ATT10|Result|
+|--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |
+|1|1|4|1|4|3|7|1|2|6|8|0|
+|2|?|8|9|1|1|1|1|5|6|1|1|
+|3|10|7|?|7|?|5|2|7|1|1|2|
+|4|3|4|3|?|2|8|4|6|7|2|1|
+|5|3|5|2|1|6|5|3|1|7|1|0|
+|6|2|7|3|2|1|4|10|3|9|5|1|
 
 
 
@@ -197,17 +180,14 @@ tail(df) # show the last 6 rows of the dataset
 ```
 
 
-<table>
-<thead><tr><th></th><th scope=col>ID</th><th scope=col>ATT1</th><th scope=col>ATT2</th><th scope=col>ATT3</th><th scope=col>ATT4</th><th scope=col>ATT5</th><th scope=col>ATT6</th><th scope=col>ATT7</th><th scope=col>ATT8</th><th scope=col>ATT9</th><th scope=col>ATT10</th><th scope=col>Result</th></tr></thead>
-<tbody>
-	<tr><th scope=row>2995</th><td>2995</td><td>2   </td><td>6   </td><td>1   </td><td>2   </td><td>1   </td><td>1   </td><td>1   </td><td> 2  </td><td>2   </td><td>2   </td><td>0   </td></tr>
-	<tr><th scope=row>2996</th><td>2996</td><td>4   </td><td>8   </td><td>6   </td><td>7   </td><td>2   </td><td>2   </td><td>4   </td><td> 1  </td><td>7   </td><td>8   </td><td>1   </td></tr>
-	<tr><th scope=row>2997</th><td>2997</td><td>4   </td><td>1   </td><td>7   </td><td>6   </td><td>8   </td><td>1   </td><td>6   </td><td> 9  </td><td>5   </td><td>2   </td><td>1   </td></tr>
-	<tr><th scope=row>2998</th><td>2998</td><td>6   </td><td>5   </td><td>8   </td><td>5   </td><td>1   </td><td>5   </td><td>2   </td><td> 7  </td><td>8   </td><td>7   </td><td>2   </td></tr>
-	<tr><th scope=row>2999</th><td>2999</td><td>2   </td><td>4   </td><td>6   </td><td>4   </td><td>1   </td><td>2   </td><td>7   </td><td>10  </td><td>2   </td><td>2   </td><td>0   </td></tr>
-	<tr><th scope=row>3000</th><td>3000</td><td>1   </td><td>8   </td><td>9   </td><td>4   </td><td>4   </td><td>3   </td><td>6   </td><td> 5  </td><td>5   </td><td>6   </td><td>2   </td></tr>
-</tbody>
-</table>
+||ID|ATT1|ATT2|ATT3|ATT4|ATT5|ATT6|ATT7|ATT8|ATT9|ATT10|Result|
+|--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |--- |
+|2995|2995|2|6|1|2|1|1|1|2|2|2|0|
+|2996|2996|4|8|6|7|2|2|4|1|7|8|1|
+|2997|2997|4|1|7|6|8|1|6|9|5|2|1|
+|2998|2998|6|5|8|5|1|5|2|7|8|7|2|
+|2999|2999|2|4|6|4|1|2|7|10|2|2|0|
+|3000|3000|1|8|9|4|4|3|6|5|5|6|2|
 
 
 
