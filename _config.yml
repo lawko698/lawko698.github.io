@@ -2,7 +2,6 @@ remote_theme: sergiokopplin/indigo
 # main text of home
 name: Lawrence Ko
 bio: A blog about technology and stuff related 
-markdown:kramdown
 
 # twitter summary info
 #description: A blog about technology and stuff related
