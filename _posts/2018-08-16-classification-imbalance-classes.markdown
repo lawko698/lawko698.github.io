@@ -447,7 +447,7 @@ round(describe(df.Result.three), 3) # view more detailed statistics and round so
 
 From above, we can see result 0 and 1 have similar number of points with different means for the same attribute. The skew of result 0 is larger and kurtosis is larger for result 1.
 
-Result 2 and 3 have smaller number of points with result 3 having the smallest number of datapoints. This means the dataset have an inbalanced class distribution. This can make it difficuit to identify classes correctly especially result 3 has similar attributes to result 2.
+Result 2 and 3 have smaller number of points with result 3 having the smallest number of datapoints. This means the dataset have an inbalanced class distribution.
 
 <h1>Visual Representation of class distribution </h1>
 
@@ -481,7 +481,7 @@ ggplot(data=as.data.frame(p.comp$x), aes(x = PC1, y = PC2)) +
 
 
 We can see that each class is mostly contained within their own area, but there are instances it goes into another area dominated by another class.
-In addition, Result 2 (Blue) and 3 (Black) are very close to each other, nearly mixing into each other. This class inbalance can pose problems of classification later on.
+In addition, Result 2 (Blue) and 3 (Black) are very close to each other, nearly mixing into each other. This class inbalance may pose problems of classification later on.
 
 <h1>Visual Representation for quantitative data: Boxplots and Histograms </h1>
 
@@ -588,9 +588,7 @@ grid.arrange(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, ncol = 2)
 ![png](https://lawko698.github.io/assets/images/Detecting%20Prostate%20Cancers_files/Detecting%20Prostate%20Cancers_41_1.png)
 
 
-From the histogram, we do not see a normal distribution in any 10 attributes. Interestingly, in attribute 1,3,4,5, as you move along the x-axis the number of points at value 3 dips quite sharply. Overall, there is a slow declining trend as you move along the x-axis. Since it is not heavily skewed, a log transformation will not convert it to a normal distribution.
-
-From earlier, we can see result 0 and 1 are similar but 2 and 3 are smaller in number.
+From the histogram, we do not see a normal distribution in any 10 attributes. Interestingly, in attribute 1,3,4,5, as you move along the x-axis the number of points at value 3 dips quite sharply. Overall, there is a slow declining trend as you move along the x-axis. 
 
 <h1>Association between variables: Correlation matrix</h1>
 
@@ -637,17 +635,12 @@ We can use a regression tree to make predictions on those missing values due to 
 - Does not require any statistical assumptions.
 - Can operate on a non-linear and complex relationship between predictors and response variable.
 
-However, regression trees may have disadvantages such as:
-- high variance, a small change in data may result into different results
-- if there is a linear relationship between the predictor and response, it is better off to use linear regression
-
-
 ```R
 #convert Results variable into a factor type
 df.completecase$Result <- factor(df.completecase$Result)
 ```
 
-The random forest function from [randomForest](https://cran.r-project.org/web/packages/randomForest/randomForest.pdf) package produces an ensemble of trees to make a prediction of the response variable. Although bootstrap aggregation of trees is a special version of random forest, random forest improves upon bagged trees by decorrelating the generate trees.
+The random forest function from [randomForest](https://cran.r-project.org/web/packages/randomForest/randomForest.pdf) package produces an ensemble of trees to make a prediction of the response variable. Although bootstrap aggregation of trees is a special version of random forest, random forest improves upon bagged trees by decorrelating the generated trees.
 
 The randomForest function operates by:
 - Training set for the current tree is drawn by sampling with replacement, about one-third of the cases are left out of the sample. This oob (out-of-bag) data is used to get a running unbiased estimate of the regression error as trees are added to the forest. The predicted values of the input data is based on out-of-bag samples.
@@ -1100,7 +1093,7 @@ print(round(multi.CV, 3))
       incurable       0  0.000 0.000     1.000
     
 
-From the table above, we can see multinomial logistic regression is able to better predict result 3 compared to LDA and QDA. However, it misclassifies result 1 more than LDA and QDA. 
+From the table above, we can see multinomial logistic regression is able to better predict result 3 compared to LDA and QDA. However, it misclassifies result 2. 
 
 
 ```R
@@ -1116,7 +1109,7 @@ multiclass.roc(df.imputed.test$Result, multi.pred, levels=base::levels(df.impute
     Multi-class area under the curve: 99.9%
 
 
-The AUC score is a healthy 99.9% which is a slight improvement upon QDA. This backs up the notion that the classes are well separated, where multinominal logisitic model performs better than LDA.
+The AUC score is 99.9% which is a slight improvement upon QDA. This backs up the notion that the classes are not well separated, where multinominal logisitic model performs better than LDA.
 
 Note: The graph is not plotted since the PCA does not show the same shape previously shown due to sampling a portion of the original data.
 
@@ -1173,7 +1166,7 @@ importance(rf.fit)
 
 
 
-From the table above, there isn't a variable that significantly stands out as the most important one in the model, but rather every variable plays a role in the model.
+From the table above, ATT1 slightly stands out as the important one in the model, but other variables plays a role in the model.
 
 
 ```R
@@ -1320,9 +1313,8 @@ multiclass.roc(df.imputed.test$Result, as.vector(as.integer(svm.pred)),
     Multi-class area under the curve: 96.9%
 
 
-From the prediction results, we obtain a 96.9% AUC score. The model performs well in predicting the test data but still slightly worse than LDA, QDA and multinominal logistic regression. This suggests the datasets class distribution are better off seperated by a linear decision boundry rather than a gaussian boundry.
+From the prediction results, we obtain a 96.9% AUC score. The model performs well in predicting the test data but still worse than LDA, QDA and multinominal logistic regression. This suggests the datasets class distribution are better off seperated by a linear decision boundry rather than a gaussian boundry.
 
-Since linear decision boundaries seem to perform the 'best' so far we should look at SVM linear kernal. 
 
 
 ```R
@@ -1421,7 +1413,7 @@ multiclass.roc(df.imputed.test$Result, as.vector(as.integer(svm.pred)),
     Multi-class area under the curve: 99.59%
 
 
-The AUC score is 99.59% which is the fourth best prediction score out of all of the models. The SVM uses a one-against-one classification which may provide a better strategy in adjusting the decision boundary (while allowing some misclassifications due to overlapping regions). However, from previous models there does not seem to have datapoints that are not well separated.   
+The AUC score is 99.59% which is the second best prediction score out of all of the models which isn't too surprising as SVM (linear) and logistic regression are similar in terms of performance.
 
 Note: The graph is not plotted since the PCA does not show the same shape previously shown due to sampling a portion of the original data.
 
