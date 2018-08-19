@@ -1,7 +1,7 @@
 ---
 title: "Detecting Prostate Cancers"
 layout: post
-date: 2018-08-16 20:35
+date: 2018-08-14 20:35
 tag: 
 - multiclass classification
 - R
