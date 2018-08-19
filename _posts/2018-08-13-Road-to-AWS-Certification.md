@@ -15,7 +15,7 @@ Nowadays, Kaggle have been releasing such large datasets that made it difficult 
 wanted to explore and use cloud computing but I never found the time during the semester. I recently moved back to Hong Kong after finishing 
 my Master's degree, I saw AWS was hosting their first summit in Hong Kong. Luckly, I was able to sign up for GameDay and the Summit. 
 
-However, I have never used AWS before so I spent a day or two reading up their services and tutorials before GameDay :sweat_smile:  
+I have never used AWS before so I spent a day or two reading up their services and tutorials before GameDay :sweat_smile:  
 
 ![jpg](http://lawko698.github.io/assets/images/2018-08-13-photos/IMAG1055.jpg)
 
@@ -43,6 +43,5 @@ They utilized AWS to build their infrastructure without needing to buy servers o
 also included AWS's motto of being a [Day One company](https://blog.aboutamazon.com/company-news/2016-letter-to-shareholders).
 
 After the summit, I decided to study for the AWS Solution Architect- Associate Certificate. I spent around 2 weeks of study and I managed to complete the exam.
-One of the largest problems with studying for the certification exam is how fast technology changes. I wasn't sure how many of the new service updates 
-they have incoporated into the exam, but from what I have seen so far, the questions were relatively free of out-dated material. It just comes to show how old technology
-becomes redundant really quickly in the world of IT.
+One of the problems with studying for the certification exam is how fast technology changes. I wasn't sure how many of the new service updates 
+they have incoporated into the exam, but from what I have seen so far, the questions were relatively free of out-dated material.
