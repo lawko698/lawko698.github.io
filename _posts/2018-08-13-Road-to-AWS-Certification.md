@@ -17,7 +17,7 @@ my Master's degree, I saw AWS was hosting their first summit in Hong Kong. Luckl
 
 However, I have never used AWS before so I spent a day or two reading up their services and tutorials before GameDay :sweat_smile:  
 
-![jpg](lawko698.github.io/assets/images/2018-08-13-photos/IMAG1055)
+![jpg](http://lawko698.github.io/assets/images/2018-08-13-photos/IMAG1055.jpg)
 
 During GameDay, there were a set of challenges teams needed to complete. 
 
@@ -33,7 +33,7 @@ We managed to complete the first three tasks, but we struggled to complete 4 and
 none of us were familiar with. In the end, we obtained 5th place which I felt was pretty good given we were all new to AWS. The only thing
 I would complain about is the sticker they gave us. It was simply too large to stick on my laptop :laughing: .
 
-![jpg](lawko698.github.io/assets/images/2018-08-13-photos/IMAG1056)
+![jpg](http://lawko698.github.io/assets/images/2018-08-13-photos/IMAG1056.jpg)
 
 Then came the Summit. The most interesting part was the invited speakers that explained their AWS architecture. 
 We had [Thomson Reuters](https://www.thomsonreuters.com/en.html), [TVB](http://tvb.com/) and [Asia Miles](https://www.asiamiles.com/).
