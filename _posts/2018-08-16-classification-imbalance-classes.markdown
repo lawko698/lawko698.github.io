@@ -16,16 +16,14 @@ externalLink: false
 
 # A new tool for detecting prostate cancers
 - Date: 30/10/2017
-- R version: 3.5.1
 
-Based on the available information, prostate cancer is the most common diagnosed cancer in Australia and the third most common cause of cancer death in men. With 85% of cases diagnosed in men over 65 years of age, it is more common in older men. In addition, there are numerous parameters having direct effects on the development  of this kind of cancer including the age, and physical and mental well-being. The cancer is generally categorised in four different stages, namely stage I to stage IV, based on the severity of cancerous cells. Besides different types of physical urinary changes in men, some test and sampling including bone and CT scans are used to determine the spread of cancerous cells.
+Based on the available information, prostate cancer is the most common diagnosed cancer in Australia and the third most common cause of cancer death in men. With 85% of cases diagnosed in men over 65 years of age, it is more common in older men. In addition, there are numerous parameters having direct effects on the development of this kind of cancer including the age, and physical and mental well-being. The cancer is generally categorised in four different stages, namely stage I to stage IV, based on the severity of cancerous cells. Besides different types of physical urinary changes in men, some test and sampling including bone and CT scans are used to determine the spread of cancerous cells.
 
-The dataset obtained from a prostate cancer lab containing 3000 observations with 10 numerical features. In addition, there is a column showing the result of the test (class attribute), which is 0 for curable, and 1 for tumour stage, 2 for node stage and 3 for incurable cancers. All the features are numerical measurements rounded to the closest integer number between 1 and 10.
+The dataset obtained from a prostate cancer lab containing 3000 observations with 10 numerical features. In addition, there is a column showing the result of the test (class attribute), which is 0 for curable, and 1 for tumour stage, 2 for node stage and 3 for incurable cancers. All the features are numerical measurements rounded to the closest integer number between 1 and 10.
 
-1) Filling missing values: There are 4 missing values in the dataset. Our first task is to estimate them by using full observations.
+1) Filling missing values: There are 4 missing values in the dataset. Our first task is to estimate them by using other complete observations.
 
-2) Build a classifier:
-Build a classifier of your choice to learn from the data and perform the classification.
+2) Build a classifier: Build a classifier of your choice to learn from the data and perform the classification.
 
 
 ```R
@@ -265,11 +263,9 @@ df[df$ATT1 == "?" | df$ATT3== "?" | df$ATT4== "?" | df$ATT5== "?",]
 
 
 
-Row 2, 3 and 4 contains 4 missing values in 4 different attributes (1, 3, 4 and 5). Although result is a categorical variable, it will be left as a integer variable for EDA, then converted into a factor type
+Row 2, 3 and 4 contains 4 missing values in 4 different attributes (1, 3, 4 and 5). Although result is a categorical variable, it will be left as a integer variable for EDA.
 
-# 1. Filling missing values with regression:
-
-There are 4 missing values in the dataset. Our first task is to estimate them by means of regression analysis. Using the remaining full observations, find regression models, and estimate the values of the missing components. 
+# 1. Filling missing values:
 
 We should remove the missing data and explore the dataset.
 
@@ -444,13 +440,13 @@ round(describe(df.Result.three), 3) # view more detailed statistics and round so
 
 
 
-From above, we can see result 0 and 1 have similar number of points with different means for the same attribute. The skew of result 0 is larger and kurtosis is larger for result 1.
+From above, we can see result 0 and 1 have similar number of data points with different means for the same attributes. The skew of result 0 is larger and kurtosis is larger for result 1.
 
 Result 2 and 3 have smaller number of points with result 3 having the smallest number of datapoints. This means the dataset have an inbalanced class distribution.
 
 <h1>Visual Representation of class distribution </h1>
 
-The next step is to produce visual representation of the distribution of the classes. Since we have 10 attributes, this can make it difficuit to visualize unless we use principal component analysis to plot it in 2 dimensions.
+The next step is to produce visual representation of the distribution of the classes. Since we have 10 attributes, this can make it difficuit to visualize unless we use principal component analysis to plot it into 2 dimensions.
 
 
 ```R
@@ -587,7 +583,7 @@ grid.arrange(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, ncol = 2)
 ![png](https://lawko698.github.io/assets/images/Detecting%20Prostate%20Cancers_files/Detecting%20Prostate%20Cancers_41_1.png)
 
 
-From the histogram, we do not see a normal distribution in any 10 attributes. Interestingly, in attribute 1,3,4,5, as you move along the x-axis the number of points at value 3 dips quite sharply. Overall, there is a slow declining trend as you move along the x-axis. 
+From the histogram, we do not see a normal distribution in any 10 attributes. Overall, there is a slow declining trend as you move along the x-axis. 
 
 <h1>Association between variables: Correlation matrix</h1>
 
@@ -627,7 +623,7 @@ scatterplotMatrix(~ATT1 + ATT2 + ATT3 + ATT4 + ATT5 + ATT6 + ATT7 + ATT8 + ATT9 
 
 The scatter graph confirms our correlation matrix, in which the data has no linear relationship between any independent variables which imply no multicollinearity. However, each independent variable has a linear relationship with the result variable.
 
-Although most of the attribute variables are not linearly correlated with each other, we can use regression tree as an imputation method. 
+Since most of the attribute variables are not linearly correlated with each other, we can use regression tree as an imputation method.
 
 We can use a regression tree to make predictions on those missing values due to its advantages such as:
 
@@ -804,9 +800,9 @@ We need to use a multiclass classification model. Here are the following models 
 - Linear and Quadratic Discriminant Analysis
 - Multinomial Logistic Regression
 - Random Forest Classifier
-- Support Vector Machine
+- Support Vector Machine (Linear and Radial)
 
-## Reference to True model
+## Reference to the real distribution
 
 
 ```R
@@ -863,7 +859,7 @@ We can use linear discriminant analysis as it is a popular multi-class classific
 
 Assumptions:
 - Gaussian distributions of classes
-- Classes have a common covariance matrix
+- Classes have a common covariance matrix (however, from the plotted distribution this assumption may be violated).
 
 I have used lda function from [MASS](https://cran.r-project.org/web/packages/MASS/MASS.pdf) package. It will build a model with cross validation by setting CV=TRUE to get predictions of class membership that are derived from leave-one-out cross-validation.
 
@@ -899,7 +895,7 @@ print(round(lda.CV, 3))
 
 From the table above, we can see a large proportion of misclassification of result 3 (incurable) compared to the others. It incorrectly predicts it as result 2 (node) since these two classes are very similar as seen in the visualization.
 
-We should use AUC score to evaluate model prediction that accounts for different threshold. This provides a better evaluation criteria than accuracy (since it only evaluates at one threshold).
+We should use AUC score to evaluate model prediction that accounts for different threshold, which provides a better evaluation criteria than accuracy.
 
 
 ```R
@@ -940,13 +936,13 @@ ggtitle("LDA Model") + theme_minimal()
 ![png](https://lawko698.github.io/assets/images/Detecting%20Prostate%20Cancers_files/Detecting%20Prostate%20Cancers_75_1.png)
 
 
-The AUC score is a healthy 0.973 and the graph shows it manages to classifiy most of the observations correctly. However, result 3 proves to be hard to classify it might not be linearly separatable. In addition, it has problems classifying points that spill into different regions between result 0 and 1, result 1 and 2.  
+The AUC score is a healthy 0.973 and the graph shows it manages to classifiy most of the observations correctly. However, result 3 proves to be hard to classify as it might not be linearly separatable. In addition, it has problems classifying points that spill into different regions between result 0 and 1, result 1 and 2.  
 
 <h1>Quadratic Discriminant Analysis (QDA) </h1>
 
-We made an assumption that our classes are linearly separatable decision boundary. However, we do not know if non-linear decision boundaries perform better. QDA uses a non-linear (quadratic) separatable decision boundary which may be a better candidate than LDA.
+We made an assumption that our classes are linearly separatable decision boundary. However, we do not know if non-linear decision boundaries perform better. QDA uses a non-linear (quadratic) separable decision boundary which may be a better candidate than LDA.
 
-One difference between LDA is the assumption we need for QDA is that every class has a different covariance matrix.
+Another difference is that QDA's class can has a different covariance matrix.
 
 QDA function performs similarly to LDA function from above.
 
@@ -980,7 +976,7 @@ print(round(qda.CV, 3))
       incurable    0.00  0.000 0.031     0.969
     
 
-From the results above, there are some trade-offs between result 0 (curable) accuracy increase to 1 (tumour) accuracy decrease and result 2 (node) accuracy increase to 3 (incurable) accuracy decrease compared to LDA's results.
+From the results above, the predicted accuracy for all classes are around 97%, which is an increase in accuracy from LDA's results.
 
 
 ```R
@@ -1021,7 +1017,7 @@ ggtitle("QDA Model") + theme_minimal()
 ![png](https://lawko698.github.io/assets/images/Detecting%20Prostate%20Cancers_files/Detecting%20Prostate%20Cancers_84_1.png)
 
 
-The AUC score has improved to 0.9899 and the graph shows it manages to classifiy most of the observations correctly similar to LDA. QDA performs slightly better than QDA.
+The AUC score has improved to 0.9899, which is an improvement to LDA.
 
 <h1>Multinomial Logistic Regression</h1>
 
@@ -1092,7 +1088,7 @@ print(round(multi.CV, 3))
       incurable       0  0.000 0.000     1.000
     
 
-From the table above, we can see multinomial logistic regression is able to better predict result 3 compared to LDA and QDA. However, it misclassifies result 2. 
+From the table above, we can see multinomial logistic regression is able to better predict 3 classes compared to LDA and QDA. However, it misclassifies result 2. 
 
 
 ```R
@@ -1108,13 +1104,13 @@ multiclass.roc(df.imputed.test$Result, multi.pred, levels=base::levels(df.impute
     Multi-class area under the curve: 99.9%
 
 
-The AUC score is 99.9% which is a slight improvement upon QDA. This backs up the notion that the classes are not well separated, where multinominal logisitic model performs better than LDA.
+The AUC score is 99.9%, which is a slight improvement upon QDA. This backs up the notion that the classes are not well separated, where multinominal logisitic model is able to perform better than LDA.
 
 Note: The graph is not plotted since the PCA does not show the same shape previously shown due to sampling a portion of the original data.
 
 <h1>Random Forest</h1>
 
-Random Forest can also be used as a classification model instead of a regression model that was used in missing value imputation. The advantages and disadvantages of random forest regression are applied to the classifier model. Random forest provides an alternative to LDA, QDA and Multinominal logistic regression as it segments the predictor space into a number of simple regions, which works well with non-linear and complex relationship between the features.
+Random Forest can also be used as a classification model instead of a regression model that was used in missing value imputation. The advantages and disadvantages of random forest regression also applies to the classifier model. Random forest provides an alternative to LDA, QDA and Multinominal logistic regression as it segments the predictor space into a number of simple regions, which works well with non-linear and complex relationship between the features.
 
 
 ```R
@@ -1165,7 +1161,7 @@ importance(rf.fit)
 
 
 
-From the table above, ATT1 slightly stands out as the important one in the model, but other variables plays a role in the model.
+From the table above, ATT1 slightly stands out as the important atttribute in the model, but other variables plays a role in the model.
 
 
 ```R
@@ -1207,9 +1203,9 @@ ggtitle("Random Forest Model") + theme_minimal()
 ![png](https://lawko698.github.io/assets/images/Detecting%20Prostate%20Cancers_files/Detecting%20Prostate%20Cancers_104_1.png)
 
 
-The AUC score is a decent 90.19% and the graph shows it manages to classifiy most of the observations correctly. However, its performance compared to the earlier models are a bit lacking. We can see result 3 proves to be hardest to classify as it mostly classifies it as result 2.
+The AUC score is a decent 90.19% and the graph shows it manages to classifiy most of the observations correctly. However, its performance is a bit lacking compared to the earlier models. We can see result 3 proves to be hardest to classify as it mostly classifies it as result 2.
 
-This tells us random forest regressions does not perform well on the data, where it segments the predictor space into a number of simple regions. Using a simple linear decision boundary is better. 
+This tells us random forest regressions does not perform well on the data, where it segments the predictor space into a number of simple regions. Using a simple linear decision boundary is better.
 
 <h1>Support Vector Machine</h1>
 
@@ -1418,15 +1414,17 @@ Note: The graph is not plotted since the PCA does not show the same shape previo
 
 # Conclusion
 
-The cancer dataset contains inbalanced class, where two types of cancer share similar attributes. In addition, some classes' attributes are not set for a particular class (i.e. Attributes that classifies node cancer, but true label is a tumor class). Although the graphical representation and statistical information of the dataset seems to indicate spillover between classes, models that separate with a linear decision boundry perform quite well compared to gaussian and random forest methods.  
+The cancer dataset contains an imbalanced class distribution. After using PCA to reduce the dimension of the data for plotting in 2 dimension, we observe classes ditributions spillover between each other's region. This signifies the classes will not be well seperated during classfication. Therefore, I have used a range of models to assess and compare performances so that the best model will be chosen.  
 
-List of models sorted by descending test AUC score:
+From the results above, here are a list of models sorted by descending test AUC score:
 - Multinominal Logistic Regression
 - SVM(linear)
 - QDA
 - LDA
 - SVM(radial)
 - Random Forest
+
+Due to the nature of the data, Multinominal logistic regression reigns supreme alongside SVM (linear) which share [similar performance in practice](https://stats.stackexchange.com/questions/95340/comparing-svm-and-logistic-regression).
 
 ---
 
