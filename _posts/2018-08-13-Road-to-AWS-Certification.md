@@ -3,9 +3,8 @@ title: "Road to AWS Certification"
 layout: post
 date: 2018-08-13 22:10
 tag: AWS
-headerImage: true
 projects: false
-hidden: false # don't count this post in blog pagination
+hidden: true # don't count this post in blog pagination
 description: "AWS Journey"
 category: blog
 ---
