@@ -24,12 +24,12 @@ During GameDay, there were a set of challenges teams needed to complete.
 2. Use Amazon Rekognition to train a model to recognize our imaginary CEO's face. Set up a Lambda trigger on the S3 bucket when a photo 
 of the CEO gets uploaded. Probably one of the hardest task since there was limited documentation to fill in the python code. 
 3. Big Data task. Use EMR or other services to query the large dataset.
-4. CI/CD Task to detect and automate uploads from github as it changes every 5 mins. We also need to test the build befor deployment.
+4. CI/CD Task to detect and automate uploads from github as it changes every 5 mins. We also need to test the build before deployment.
 This part uses AWS code commit. 
 5. I can't remember exactly the topic but it uses AWS code pipeline for the task.
 
 We managed to complete the first three tasks, but we struggled to complete 4 and 5 as it heavily relies on codecommit and code pipeline which
-none of us were familiar with. In the end, we obtained 5th place which I felt was pretty good given we were all new to AWS. The only thing
+none of us knew how to configure it with time running out. In the end, we obtained 5th place which I felt was pretty good given we were all new to AWS. The only thing
 I would complain about is the sticker they gave us. It was simply too large to stick on my laptop :laughing: .
 
 ![jpg](http://lawko698.github.io/assets/images/2018-08-13-photos/IMAG1056.jpg)
