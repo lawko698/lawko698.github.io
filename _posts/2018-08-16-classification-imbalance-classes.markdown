@@ -22,10 +22,9 @@ Based on the available information, prostate cancer is the most common diagnosed
 
 The dataset obtained from a prostate cancer lab containing 3000 observations with 10 numerical features. In addition, there is a column showing the result of the test (class attribute), which is 0 for curable, and 1 for tumour stage, 2 for node stage and 3 for incurable cancers. All the features are numerical measurements rounded to the closest integer number between 1 and 10.
 
-1)    Filling missing values with regression:
-There are 4 missing values in the dataset. Our first task is to estimate them by means of regression analysis. Using the remaining full observations, find regression models, and estimate the values of the missing components.
+1) Filling missing values: There are 4 missing values in the dataset. Our first task is to estimate them by using full observations.
 
-2)    Build a classifier:
+2) Build a classifier:
 Build a classifier of your choice to learn from the data and perform the classification.
 
 
