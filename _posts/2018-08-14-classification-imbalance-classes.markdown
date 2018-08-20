@@ -13,4 +13,4 @@ category: project
 author: Lawrence
 externalLink: false
 ---
-Due to Github unable to render the tables properly, the notebook is located [here](https://github.com/lawko698/notebooks/tree/master/other/).
+Due to Github unable to render the tables properly, the notebook is located [here](https://github.com/lawko698/notebooks/blob/master/other/Detecting%20Prostate%20Cancers.ipynb).
