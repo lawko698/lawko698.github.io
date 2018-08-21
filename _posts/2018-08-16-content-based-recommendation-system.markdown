@@ -13,7 +13,7 @@ author: Lawrence
 externalLink: false
 ---
 
-I always wanted to try and build a recommendation system from scratch. Luckily, Kaggle released a new dataset from [Donors Choose](https://www.donorschoose.org/) where the aim is to build targeted email campaigns recommending specific classroom requests to prior donors. [Part 1](http://lawko698.github.io/docs/EDA%20and%20Data%20Cleaning.html) contains the EDA and slight data cleaning of the datasets, while [Part 2](http://lawko698.github.io/docs/Recommendation%20System.html) contains the recommendation system.
+I always wanted to try and build a recommendation system from scratch that differed from the movielens dataset. Luckily, Kaggle released a new dataset from [Donors Choose](https://www.donorschoose.org/) where the aim is to build a targeted email campaign system recommending specific classroom requests to prior donors. [Part 1](http://lawko698.github.io/docs/EDA%20and%20Data%20Cleaning.html) contains the EDA and slight data cleaning of the datasets, while [Part 2](http://lawko698.github.io/docs/Recommendation%20System.html) contains the recommendation system.
 
 ---
 
