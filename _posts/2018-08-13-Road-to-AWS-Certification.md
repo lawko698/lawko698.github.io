@@ -12,7 +12,7 @@ category: blog
  
 Nowadays, Kaggle have been releasing such large datasets that made it difficult to processing on my 16 GB RAM machine. So I have always 
 wanted to explore and use cloud computing but I never found the time during the semester. I recently moved back to Hong Kong after finishing 
-my Master's degree, I saw AWS was hosting their first summit in Hong Kong. Luckly, I was able to sign up for GameDay and the Summit. 
+my Master's degree, which I saw AWS was hosting their first summit in Hong Kong. Luckily, I was able to sign up for GameDay and the Summit. 
 
 I have never used AWS before so I spent a day or two reading up their services and tutorials before GameDay :sweat_smile:  
 
