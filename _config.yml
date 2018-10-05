@@ -20,8 +20,7 @@ picture: assets/images/profile.jpg
 url: https://lawko698.github.io
 # your url: http://USERNAME.github.io
 
-redirect_to:
-  - https://www.lawko698.com
+redirect_to: https://www.lawko698.com
 
 permalink: /:title/
 
